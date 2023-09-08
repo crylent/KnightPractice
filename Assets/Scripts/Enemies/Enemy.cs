@@ -15,12 +15,16 @@ namespace Enemies
         [SerializeField] private Collider hitbox;
         private Collider _hitbox;
 
+        private OpacityController _opacityController;
         private Animator _animator;
         private AttackPhase _attackPhase;
+        private static readonly int AttackTrigger = Animator.StringToHash("attack");
 
         protected void Start()
         {
-            _animator = gameObject.GetComponentInChildren<Animator>();
+            _animator = gameObject.GetComponentsInChildren<Animator>()[1];
+            _opacityController = gameObject.GetComponent<OpacityController>();
+            _opacityController.FadeInFromZero();
         }
 
         protected void Update()
@@ -53,6 +57,8 @@ namespace Enemies
             {
                 transform.Translate(Movement * Time.deltaTime);
             }
+            
+            
         }
 
         protected void Attack()
@@ -60,7 +66,7 @@ namespace Enemies
             if (_attackPhase != AttackPhase.NotAttacking) return;
             
             _attackPhase = AttackPhase.BeforeHit;
-            _animator.Play("attack");
+            _animator.SetTrigger(AttackTrigger);
             _hitbox = Instantiate(hitbox, gameObject.transform);
         }
 
