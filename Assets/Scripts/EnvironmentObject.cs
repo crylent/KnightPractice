@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnvironmentObject : MonoBehaviour
 {
     [SerializeField] private float opacity = 1.0f;
-    private SpriteRenderer[] _sprites;
+    private readonly List<SpriteRenderer> _sprites = new();
     private Collider[] _colliders;
     private Animator _animator;
     private bool _isHidden;
@@ -13,7 +14,12 @@ public class EnvironmentObject : MonoBehaviour
 
     private void Start()
     {
-        _sprites = GetComponentsInChildren<SpriteRenderer>();
+
+        var rootSprite = GetComponent<SpriteRenderer>();
+        if (rootSprite != null) _sprites.Add(rootSprite);
+
+        _sprites.AddRange(GetComponentsInChildren<SpriteRenderer>());
+
         _colliders = GetComponents<Collider>();
         _animator = GetComponent<Animator>();
     }
@@ -24,7 +30,7 @@ public class EnvironmentObject : MonoBehaviour
         var hideObject = false;
         foreach (var c in _colliders)
         {
-            hideObject = c.Raycast(ray, out var hit, float.PositiveInfinity);
+            hideObject = c.Raycast(ray, out _, float.PositiveInfinity);
             if (hideObject) break;
         }
 

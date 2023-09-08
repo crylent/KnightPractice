@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,7 +10,7 @@ public class EnvironmentGenerator : MonoBehaviour
     [SerializeField] private uint objectsNumber;
     [SerializeField] private float minimumDistanceBetweenTwoObjects;
 
-    private readonly Vector3[] _positions = {};
+    private readonly List<Vector3> _positions = new();
 
     private void Start()
     {
@@ -28,6 +29,8 @@ public class EnvironmentGenerator : MonoBehaviour
             var objIndex = Random.Range(0, objects.Length);
             var obj = objects[objIndex];
             Instantiate(obj, position, obj.transform.rotation);
+            
+            _positions.Add(position);
         }
     }
 
