@@ -29,10 +29,10 @@ namespace Enemies
 
         protected void Update()
         {
-            var normalizedTime = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            var state = _animator.GetCurrentAnimatorStateInfo(0);
             switch (_attackPhase)
             {
-                case AttackPhase.BeforeHit when normalizedTime >= 0.5: // make damage
+                case AttackPhase.BeforeHit when state.normalizedTime >= 0.5: // make damage
                     if (_hitbox.bounds.Intersects(PlayerComponents.Collider.bounds))
                     {
                         PlayerComponents.Controller.OnHit(10);
@@ -40,7 +40,7 @@ namespace Enemies
                     _attackPhase = AttackPhase.AfterHit;
                     Destroy(_hitbox.gameObject);
                     break;
-                case AttackPhase.AfterHit when normalizedTime >= 1: // attack animation finished
+                case AttackPhase.AfterHit when !state.IsName("attack"): // attack animation finished
                     _attackPhase = AttackPhase.NotAttacking;
                     break;
                 case AttackPhase.NotAttacking:
