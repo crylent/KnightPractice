@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 namespace Enemies
@@ -15,7 +16,7 @@ namespace Enemies
         [SerializeField] private Collider hitbox;
         private Collider _hitbox;
 
-        private OpacityController _opacityController;
+        private OpacityController.OpacityController _opacityController;
         private Animator _animator;
         private AttackPhase _attackPhase;
         private static readonly int AttackTrigger = Animator.StringToHash("attack");
@@ -23,7 +24,7 @@ namespace Enemies
         protected void Start()
         {
             _animator = gameObject.GetComponentsInChildren<Animator>()[1];
-            _opacityController = gameObject.GetComponent<OpacityController>();
+            _opacityController = gameObject.GetComponent<OpacityController.OpacityController>();
             _opacityController.FadeInFromZero();
         }
 
