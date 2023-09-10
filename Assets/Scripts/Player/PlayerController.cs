@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Enemies;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Player
         [SerializeField] private float health = 100;
         [SerializeField] private float speed = 25;
         private Vector3 _deltaMove;
+        private bool _watchingRight;
         private AttackPhase _attackPhase; // true if animation (attack or other) should block other animations until completed
         private Animator _animator;
         private Rigidbody _rigidbody;
@@ -20,26 +22,25 @@ namespace Player
     
         private static readonly int Hit = Animator.StringToHash("onHit");
         private static readonly int Attack = Animator.StringToHash("onAttack");
-        private static readonly int IsRunning = Animator.StringToHash("isRunning");
+        private static readonly int Movement = Animator.StringToHash("movement");
 
         // Start is called before the first frame update
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _animator = transform.GetChild(0).GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
             PlayerComponents.Init(gameObject);
         }
 
         // Update is called once per frame
         private void Update()
         {
-            var state = _animator.GetCurrentAnimatorStateInfo(0);
-            var normalizedTime = state.normalizedTime;
+            var normalizedTime = GetAnimatorState().normalizedTime;
             switch (_attackPhase)
             {
-                case AttackPhase.BeforeHit when state.IsName("Character_Attack") && normalizedTime >= 0.5: // make damage
+                case AttackPhase.BeforeHit when IsPerformingAttackAnimation() && normalizedTime >= 0.5: // make damage
                     Strike(); break;
-                case AttackPhase.AfterHit when !state.IsName("Character_Attack"): // attack animation finished
+                case AttackPhase.AfterHit when !IsPerformingAttackAnimation(): // attack animation finished
                     OnAttackCompleted(); break;
                 case AttackPhase.NotAttacking:
                 default:
@@ -47,17 +48,32 @@ namespace Player
             }
         }
 
+        private AnimatorStateInfo GetAnimatorState()
+        {
+            return _animator.GetCurrentAnimatorStateInfo(0);
+        }
+
+        private bool IsPerformingAttackAnimation()
+        {
+            var state = GetAnimatorState();
+            return state.IsName("Cat_Attack") || state.IsName("Cat_AttackRight");
+        }
+
         private void FixedUpdate()
         {
-            var isMoving = _deltaMove.magnitude != 0 && _attackPhase == AttackPhase.NotAttacking;
-            _animator.SetBool(IsRunning, isMoving);
-
-            _rigidbody.velocity = isMoving ? speed * _deltaMove : Vector3.zero;
-        
-            if (isMoving && _deltaMove.x != 0)
+            var movement = (_attackPhase == AttackPhase.NotAttacking) ? _deltaMove : Vector3.zero; // can't move when attacking
+            
+            var deltaX = Math.Sign(movement.x);
+            var movementAnimation = (deltaX != 0) ? deltaX : Math.Sign(movement.z);
+            _animator.SetInteger(Movement, movementAnimation);
+            _watchingRight = movementAnimation switch
             {
-                transform.localScale = new Vector3(_deltaMove.x > 0 ? 1 : -1, 1, 1);
-            }
+                > 0 => true,
+                < 0 => false,
+                _ => _watchingRight
+            };
+
+            _rigidbody.velocity = speed * movement;
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -73,7 +89,14 @@ namespace Player
         
             _attackPhase = AttackPhase.BeforeHit;
             _animator.SetTrigger(Attack);
-            _attackHitbox = Instantiate(attackHitbox, gameObject.transform);
+            _attackHitbox = Instantiate(attackHitbox, transform);
+            if (!_watchingRight) // rotate hitbox to the left
+            {
+                var hitboxTransform = _attackHitbox.transform;
+                var hitboxRot = hitboxTransform.rotation.eulerAngles;
+                hitboxRot.y -= 180;
+                hitboxTransform.rotation = Quaternion.Euler(hitboxRot);
+            }
             _enemiesBeingAttacked = _attackHitbox.GetComponent<ColliderController>().Enemies;
         }
 
