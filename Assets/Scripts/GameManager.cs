@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Enemies;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,10 +7,10 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Challenge challenge;
     [SerializeField] private Portal portalPrefab;
+    [SerializeField] private Rect spawnArea;
 
     private int _currentWave = -1;
     private long _enemiesAlive;
-    //private readonly List<Enemy> _enemiesAlive = new();
     
     // Start is called before the first frame update
     private void Start()
@@ -21,8 +20,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LaunchChallenge()
     {
-        //yield return new WaitForEndOfFrame();
-
         while (_currentWave + 1 < challenge.WavesCount)
         {
             yield return new WaitWhile(() => _enemiesAlive > 0);
@@ -43,9 +40,12 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SpawnEnemy(Enemy enemy)
     {
-        var portal = Instantiate(portalPrefab);
+        var portal = Instantiate(
+            portalPrefab, 
+            Utility.RandomPosition(spawnArea) + portalPrefab.transform.position,
+            Quaternion.identity
+            );
         portal.enemyToSpawn = enemy;
-        //_enemiesAlive.Add(enemy);
         yield return new WaitUntil(() => portal.SpawnedEnemy);
         var spawnedEnemy = portal.SpawnedEnemy;
 

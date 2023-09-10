@@ -16,11 +16,7 @@ public class EnvironmentGenerator : MonoBehaviour
     {
         for (uint i = 0; i < objectsNumber; i++)
         {
-            var position = new Vector3(
-                Random.Range(worldSize.xMin, worldSize.xMax),
-                0,
-                Random.Range(worldSize.yMin, worldSize.yMax)
-                );
+            var position = Utility.RandomPosition(worldSize);
             if (!CheckDistance(position))
             {
                 i--; continue;
