@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3510529531771188121}
   - component: {fileID: -3050808237028913817}
   - component: {fileID: -4160669055460779281}
+  - component: {fileID: -5877748432797124893}
   m_Layer: 0
   m_Name: PF Props Tree T3
   m_TagString: Untagged
@@ -118,6 +119,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   opacity: 1
+--- !u!210 &-5877748432797124893
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055102311959635369}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &2055102312182832482
 GameObject:
   m_ObjectHideFlags: 0

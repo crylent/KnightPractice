@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3679833107318686742}
   - component: {fileID: 3750370037490083862}
+  - component: {fileID: -3396018632469369037}
   m_Layer: 0
   m_Name: PF Flower
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!210 &-3396018632469369037
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8193410510875309158}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

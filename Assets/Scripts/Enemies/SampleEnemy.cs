@@ -17,21 +17,10 @@ namespace Enemies
             InvokeRepeating(nameof(decideOnDirection), 0, movementTime);
         }
 
-        // Update is called once per frame
-        private new void Update()
+        protected override void BehaviorUpdate()
         {
-            base.Update();
-
             var posDiff = PlayerComponents.Transform.position - gameObject.transform.position; // positions difference
             posDiff.y = 0; // don't consider the height
-            PlayerDetected = PlayerDetected switch
-            {
-                false when posDiff.magnitude <= detectionRange => true, // start chasing
-                true when posDiff.magnitude > chaseRange => false, // stop chasing
-                _ => PlayerDetected
-            };
-
-            if (!PlayerDetected) return;
             Movement = posDiff.normalized * maxSpeed; // chase player
 
             if (posDiff.magnitude <= attackRange)
@@ -42,8 +31,6 @@ namespace Enemies
 
         private void decideOnDirection()
         {
-            if (PlayerDetected) return;
-            
             if (Movement != Vector3.zero) // need rest
             {
                 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3112375125460322631}
   - component: {fileID: 3182912117158028615}
+  - component: {fileID: -2522083017641404008}
   m_Layer: 0
   m_Name: PF Grass I
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!210 &-2522083017641404008
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7607938130759153975}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

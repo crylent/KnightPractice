@@ -23,7 +23,8 @@ public class Portal : MonoBehaviour
     private IEnumerator SpawnEnemy()
     {
         yield return new WaitForSeconds(spawnTime);
-        SpawnedEnemy = Instantiate(enemyToSpawn, gameObject.transform.position, Quaternion.identity);
+        var prefabTransform = enemyToSpawn.transform;
+        SpawnedEnemy = Instantiate(enemyToSpawn, gameObject.transform.position + prefabTransform.position, prefabTransform.rotation);
     }
 
     private IEnumerator DestroyPortal()

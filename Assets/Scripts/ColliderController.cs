@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Enemies;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class ColliderController : MonoBehaviour
 {
     public HashSet<Enemy> Enemies { get; } = new();
