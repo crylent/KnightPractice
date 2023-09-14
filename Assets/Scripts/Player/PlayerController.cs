@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, ICanAttack
     {
         [SerializeField] private float health = 100;
         [SerializeField] private float speed = 25;
         private Vector3 _deltaMove;
         private bool _watchingRight;
-        private AttackPhase _attackPhase; // true if animation (attack or other) should block other animations until completed
+        private bool _isAttacking;
         private Animator _animator;
         private Rigidbody _rigidbody;
     
@@ -32,36 +32,9 @@ namespace Player
             PlayerComponents.Init(gameObject);
         }
 
-        // Update is called once per frame
-        private void Update()
-        {
-            var normalizedTime = GetAnimatorState().normalizedTime;
-            switch (_attackPhase)
-            {
-                case AttackPhase.BeforeHit when IsPerformingAttackAnimation() && normalizedTime >= 0.5: // make damage
-                    Strike(); break;
-                case AttackPhase.AfterHit when !IsPerformingAttackAnimation(): // attack animation finished
-                    OnAttackCompleted(); break;
-                case AttackPhase.NotAttacking:
-                default:
-                    break;
-            }
-        }
-
-        private AnimatorStateInfo GetAnimatorState()
-        {
-            return _animator.GetCurrentAnimatorStateInfo(0);
-        }
-
-        private bool IsPerformingAttackAnimation()
-        {
-            var state = GetAnimatorState();
-            return state.IsName("Cat_Attack") || state.IsName("Cat_AttackRight");
-        }
-
         private void FixedUpdate()
         {
-            var movement = (_attackPhase == AttackPhase.NotAttacking) ? _deltaMove : Vector3.zero; // can't move when attacking
+            var movement = !_isAttacking ? _deltaMove : Vector3.zero; // can't move when attacking
             
             var deltaX = Math.Sign(movement.x);
             var movementAnimation = (deltaX != 0) ? deltaX : Math.Sign(movement.z);
@@ -85,9 +58,9 @@ namespace Player
         public void OnAttack(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
-            if (_attackPhase != AttackPhase.NotAttacking) return;
-        
-            _attackPhase = AttackPhase.BeforeHit;
+            if (_isAttacking) return;
+            
+            _isAttacking = true;
             _animator.SetTrigger(Attack);
             _attackHitbox = Instantiate(attackHitbox, transform);
             if (!_watchingRight) // rotate hitbox to the left
@@ -104,23 +77,21 @@ namespace Player
         {
             health -= damageDone;
             _animator.SetTrigger(Hit);
-            _attackPhase = AttackPhase.NotAttacking;
         }
 
-        private void Strike()
+        public void ApplyDamage()
         {
             foreach (var other in _enemiesBeingAttacked)
             {
                 other.OnHit(10);
             }
 
-            _attackPhase = AttackPhase.AfterHit;
             Destroy(_attackHitbox.gameObject);
         }
 
-        private void OnAttackCompleted()
+        public void AfterAttack()
         {
-            _attackPhase = AttackPhase.NotAttacking;
+            _isAttacking = false;
         }
     }
 }
