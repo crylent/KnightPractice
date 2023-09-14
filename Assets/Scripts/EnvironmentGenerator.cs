@@ -24,7 +24,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
             var objIndex = Random.Range(0, objects.Length);
             var obj = objects[objIndex];
-            Instantiate(obj, position, obj.transform.rotation);
+            Instantiate(obj, position + obj.transform.position, obj.transform.rotation);
             
             _positions.Add(position);
         }
