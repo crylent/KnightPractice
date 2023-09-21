@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Enemies;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Player
@@ -11,12 +12,13 @@ namespace Player
         [SerializeField] private float speed = 25;
         private Vector3 _deltaMove;
         private bool _watchingRight;
-        private bool _isAttacking;
     
         [SerializeField] private Collider attackHitbox;
         private Collider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
-    
+        
+        [SerializeField] private UnityEvent onHealthChanged = new();
+
         private static readonly int Movement = Animator.StringToHash("movement");
 
         // Start is called before the first frame update
@@ -24,11 +26,12 @@ namespace Player
         {
             base.Start();
             PlayerComponents.Init(gameObject);
+            onHealthChanged.Invoke();
         }
 
         private void FixedUpdate()
         {
-            var movement = !_isAttacking ? _deltaMove : Vector3.zero; // can't move when attacking
+            var movement = !IsAttacking ? _deltaMove : Vector3.zero; // can't move when attacking
             Rigidbody.velocity = speed * movement;
         }
 
@@ -52,9 +55,9 @@ namespace Player
         public void OnAttack(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
-            if (_isAttacking) return;
+            if (IsAttacking) return;
             
-            _isAttacking = true;
+            IsAttacking = true;
             Animator.SetTrigger(AttackTrigger);
             _attackHitbox = Instantiate(attackHitbox, transform);
             if (!_watchingRight) // rotate hitbox to the left
@@ -77,9 +80,10 @@ namespace Player
             Destroy(_attackHitbox.gameObject);
         }
 
-        public override void AfterAttack()
+        public override void TakeDamage(int damage = 1)
         {
-            _isAttacking = false;
+            base.TakeDamage(damage);
+            onHealthChanged.Invoke();
         }
     }
 }

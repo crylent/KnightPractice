@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c27038279959214f9cf3913955c22b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  maxHealth: 3
   takesFireDamage: 0
   fireResistance: 1
   hitbox: {fileID: 1899805537843731109, guid: 8512b1ef63972cc44b1e9616fe828977, type: 3}

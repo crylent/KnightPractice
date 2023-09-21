@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Animator), typeof(Rigidbody))]
 public abstract class LiveEntity : MonoBehaviour
 {
-    [SerializeField] protected int health;
+    [FormerlySerializedAs("health")] [SerializeField] private int maxHealth;
+    public int MaxHealth => maxHealth;
+    public int Health
+    {
+        get;
+        private set;
+    }
     
     protected Animator Animator;
     protected Rigidbody Rigidbody;
+    protected bool IsAttacking;
     
     protected static readonly int AttackTrigger = Animator.StringToHash("onAttack");
     private static readonly int HitTrigger = Animator.StringToHash("onHit");
@@ -21,17 +29,21 @@ public abstract class LiveEntity : MonoBehaviour
 
     protected virtual void Start()
     {
+        Health = maxHealth;
         Animator = gameObject.GetComponent<Animator>();
         Rigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
     public abstract void MakeDamage();
-    public abstract void AfterAttack();
-
-    public void TakeDamage(int damage = 1)
+    public void AfterAttack()
     {
-        health -= damage;
-        Animator.SetTrigger(health <= 0 ? DeathTrigger : HitTrigger);
+        IsAttacking = false;
+    }
+
+    public virtual void TakeDamage(int damage = 1)
+    {
+        Health -= damage;
+        Animator.SetTrigger(Health <= 0 ? DeathTrigger : HitTrigger);
     }
     
     // FIRE DAMAGE CONTROLLER

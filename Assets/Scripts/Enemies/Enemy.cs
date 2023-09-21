@@ -11,7 +11,6 @@ namespace Enemies
         private Collider _hitbox;
 
         private OpacityController.OpacityController _opacityController;
-        private bool _isAttacking;
 
         protected void Update()
         {
@@ -22,9 +21,9 @@ namespace Enemies
 
         protected void Attack()
         {
-            if (_isAttacking) return;
+            if (IsAttacking) return;
             
-            _isAttacking = true;
+            IsAttacking = true;
             Animator.SetTrigger(AttackTrigger);
             _hitbox = Instantiate(hitbox, gameObject.transform);
         }
@@ -37,11 +36,6 @@ namespace Enemies
             }
             Destroy(_hitbox.gameObject);
             _hitbox = null;
-        }
-
-        public override void AfterAttack()
-        {
-            _isAttacking = false;
         }
     }
 }
