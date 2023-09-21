@@ -35,17 +35,6 @@ namespace Player
         private void FixedUpdate()
         {
             var movement = !_isAttacking ? _deltaMove : Vector3.zero; // can't move when attacking
-            
-            var deltaX = Math.Sign(movement.x);
-            var movementAnimation = (deltaX != 0) ? deltaX : Math.Sign(movement.z);
-            _animator.SetInteger(Movement, movementAnimation);
-            _watchingRight = movementAnimation switch
-            {
-                > 0 => true,
-                < 0 => false,
-                _ => _watchingRight
-            };
-
             _rigidbody.velocity = speed * movement;
         }
 
@@ -53,6 +42,17 @@ namespace Player
         {
             var v = context.ReadValue<Vector2>();
             _deltaMove = new Vector3(v[0], 0, v[1]);
+            
+            // update animation
+            var deltaX = Math.Sign(_deltaMove.x);
+            var movementAnimation = (deltaX != 0) ? deltaX : Math.Sign(_deltaMove.z);
+            _animator.SetInteger(Movement, movementAnimation);
+            _watchingRight = movementAnimation switch
+            {
+                > 0 => true,
+                < 0 => false,
+                _ => _watchingRight
+            };
         }
 
         public void OnAttack(InputAction.CallbackContext context)
