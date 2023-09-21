@@ -16,7 +16,7 @@ namespace Enemies
             posDiff.y = 0; // don't consider the height
             Movement = posDiff.normalized * speed; // chase player
             
-            animator.SetInteger(XMovement, Math.Sign(Movement.x));
+            Animator.SetInteger(XMovement, Math.Sign(Movement.x));
 
             if (posDiff.magnitude < attackRange)
             {
@@ -26,8 +26,8 @@ namespace Enemies
 
         private void FixedUpdate()
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1f > 0.5f)
-                rigidbody.velocity = Movement;
+            if (Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1f > 0.5f)
+                Rigidbody.velocity = Movement;
         }
     }
 }

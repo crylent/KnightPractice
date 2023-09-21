@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: -7552582706839291426, guid: 01236b955f199754e8ce5c20f53fd70b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 01236b955f199754e8ce5c20f53fd70b,
         type: 3}
@@ -279,7 +279,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 967800ccf0f996b458f453fb0408d500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
+  health: 3
+  takesFireDamage: 1
+  fireResistance: 5
   hitbox: {fileID: 1899805537843731109, guid: 8512b1ef63972cc44b1e9616fe828977, type: 3}
   speed: 3
   attackRange: 13

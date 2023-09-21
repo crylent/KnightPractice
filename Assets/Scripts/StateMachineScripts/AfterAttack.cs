@@ -7,7 +7,7 @@ namespace StateMachineScripts
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            GetScriptComponent(animator).ApplyDamage();
+            GetScriptComponent(animator).MakeDamage();
         }
 
         // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
@@ -16,9 +16,9 @@ namespace StateMachineScripts
             GetScriptComponent(animator).AfterAttack();
         }
 
-        private static ICanAttack GetScriptComponent(Component component)
+        private static LiveEntity GetScriptComponent(Component component)
         {
-            return component.GetComponent<ICanAttack>();
+            return component.GetComponent<LiveEntity>();
         }
     }
 }
