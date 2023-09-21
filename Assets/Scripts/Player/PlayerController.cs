@@ -26,7 +26,6 @@ namespace Player
         {
             base.Start();
             PlayerComponents.Init(gameObject);
-            onHealthChanged.Invoke();
         }
 
         private void FixedUpdate()
