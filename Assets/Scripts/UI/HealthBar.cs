@@ -43,7 +43,7 @@ namespace UI
         public void OnHealthChanged()
         {
             var deltaSign = Math.Sign(Health - _lastHealth);
-            for (var i = _lastHealth - 1; i != Health + deltaSign; i += deltaSign)
+            for (var i = _lastHealth - 1; i != Health + deltaSign && i >= 0 && i < MaxHealth; i += deltaSign)
             {
                 _lives[i].GetComponent<Animator>().SetBool(IsWastedBoolean,deltaSign < 0);
             }
