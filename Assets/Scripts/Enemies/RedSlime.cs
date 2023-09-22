@@ -32,7 +32,7 @@ namespace Enemies
             yield return new WaitForSeconds(fireLifetime);
             fireSystem.Stop();
             yield return new WaitWhile(fireSystem.IsAlive);
-            Destroy(fireSystem.transform.parent);
+            Destroy(fireSystem.transform.parent.gameObject);
         }
     }
 }
