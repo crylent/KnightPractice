@@ -18,6 +18,7 @@ namespace Enemies
 
         private IEnumerator SetGroundOnFire()
         {
+            yield return new WaitWhile(() => Animator.GetCurrentAnimatorStateInfo(0).IsName("Slime_FadeIn"));
             while (isActiveAndEnabled)
             {
                 var fire = Instantiate(fireEffect, transform.position, fireEffect.transform.rotation);
