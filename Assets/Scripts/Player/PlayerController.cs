@@ -16,14 +16,24 @@ namespace Player
         
         [SerializeField] private float dodgeSpeed = 200f;
         [SerializeField] private float dodgeTime = 0.15f;
+        [SerializeField] private float dodgeManaConsumption = 5f;
         [SerializeField] private ParticleSystem dodgeEffect;
         private bool _isDodging;
+
+        [SerializeField] private float maxMana = 100f;
+        public float MaxMana => maxMana;
+        public float Mana
+        {
+            get;
+            private set;
+        }
 
         [SerializeField] private Collider attackHitbox;
         private Collider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
         
-        [SerializeField] private UnityEvent onHealthChanged = new();
+        [SerializeField] private UnityEvent onHealthChanged;
+        [SerializeField] private UnityEvent onManaChanged;
 
         private static readonly int Movement = Animator.StringToHash("movement");
 
@@ -31,6 +41,7 @@ namespace Player
         protected override void Start()
         {
             base.Start();
+            Mana = maxMana;
             PlayerComponents.Init(gameObject);
         }
 
@@ -78,7 +89,7 @@ namespace Player
         public void OnDodge(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
-            if (!_isDodging) StartCoroutine(Dodge());
+            if (!_isDodging && Mana >= dodgeManaConsumption) StartCoroutine(Dodge());
         }
 
         private IEnumerator Dodge()
@@ -93,6 +104,10 @@ namespace Player
                 effectTransform.rotation
                 );
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
+            
+            // consume mana
+            Mana -= dodgeManaConsumption;
+            onManaChanged.Invoke();
             
             yield return new WaitForSeconds(dodgeTime);
             _isDodging = false;
