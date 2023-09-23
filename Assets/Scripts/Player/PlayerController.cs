@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enemies;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -20,6 +21,13 @@ namespace Player
         [SerializeField] private ParticleSystem dodgeEffect;
         private bool _isDodging;
 
+        [SerializeField] private int shieldDefaultStability = 3;
+        [SerializeField] private float shieldStabilityRecoverTime = 15f;
+        [SerializeField] private float speedFactorWhenBlocking = 0.25f;
+        [SerializeField] private ParticleSystem blockEffect;
+        private int _shieldStability;
+        private bool _isBlocking;
+
         [SerializeField] private float maxMana = 100f;
         public float MaxMana => maxMana;
         public float Mana
@@ -35,20 +43,26 @@ namespace Player
         [SerializeField] private UnityEvent onHealthChanged;
         [SerializeField] private UnityEvent onManaChanged;
 
-        private static readonly int Movement = Animator.StringToHash("movement");
+        private static readonly int RunAnimSpeed = Animator.StringToHash("runAnimSpeed");
+        private static readonly int IsRunningBool = Animator.StringToHash("isRunning");
+        private static readonly int IsWatchingRightBool = Animator.StringToHash("isWatchingRight");
+        private static readonly int IsBlockingBool = Animator.StringToHash("isBlocking");
+        private static readonly int ShieldDamageInt = Animator.StringToHash("shieldDamage");
 
         // Start is called before the first frame update
         protected override void Start()
         {
             base.Start();
             Mana = maxMana;
+            _shieldStability = shieldDefaultStability;
             PlayerComponents.Init(gameObject);
         }
 
         private void FixedUpdate()
         {
-            if (_isDodging) return;
-            var movement = !IsAttacking ? _deltaMove : Vector3.zero; // can't move when attacking
+            if (_isDodging) return; // ignore default movement when dodging
+            var movement = !IsAttacking ? _deltaMove : Vector3.zero; // stop movement when attacking
+            if (_isBlocking) movement *= speedFactorWhenBlocking; // slow down movement when blocking
             Rigidbody.velocity = speed * movement;
         }
 
@@ -59,21 +73,18 @@ namespace Player
             
             // update animation
             var deltaX = Math.Sign(_deltaMove.x);
-            var movementAnimation = (deltaX != 0) ? deltaX : Math.Sign(_deltaMove.z);
-            Animator.SetInteger(Movement, movementAnimation);
-            _watchingRight = movementAnimation switch
-            {
-                > 0 => true,
-                < 0 => false,
-                _ => _watchingRight
-            };
+            var deltaZ = Math.Sign(_deltaMove.z);
+            _watchingRight = deltaX > 0 || (deltaX == 0 && (deltaZ > 0 || (deltaZ == 0 && _watchingRight)));
+            Animator.SetBool(IsWatchingRightBool, _watchingRight);
+            Animator.SetBool(IsRunningBool, deltaX != 0 || deltaZ != 0);
         }
 
         public void OnAttack(InputAction.CallbackContext context)
         {
-            if (!context.performed || IsAttacking) return;
+            if (!context.performed || IsAttacking || _isDodging) return;
             
             IsAttacking = true;
+            if (_isBlocking) SetBlock(false); // stop blocking
             Animator.SetTrigger(AttackTrigger);
             _attackHitbox = Instantiate(attackHitbox, transform);
             if (!_watchingRight) // rotate hitbox to the left
@@ -84,6 +95,19 @@ namespace Player
                 hitboxTransform.rotation = Quaternion.Euler(hitboxRot);
             }
             _enemiesBeingAttacked = _attackHitbox.GetComponent<ColliderController>().Enemies;
+        }
+
+        public void OnBlock(InputAction.CallbackContext context)
+        {
+            if (context.started && _shieldStability > 0) SetBlock(true);
+            else if (context.canceled) SetBlock(false);
+        }
+
+        private void SetBlock(bool blocking)
+        {
+            _isBlocking = blocking;
+            Animator.SetBool(IsBlockingBool, blocking);
+            Animator.SetFloat(RunAnimSpeed, blocking ? 0.5f : 1f);
         }
 
         public void OnDodge(InputAction.CallbackContext context)
@@ -97,12 +121,7 @@ namespace Player
             _isDodging = true;
             
             yield return new WaitWhile(() => IsAttacking); // can't dodge while attacking, but will do it after finishing
-            var effectTransform = dodgeEffect.transform;
-            var system = Instantiate(
-                dodgeEffect, 
-                transform.position + effectTransform.position, 
-                effectTransform.rotation
-                );
+            Utility.PlayEffectOnce(dodgeEffect, this);
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
             
             // consume mana
@@ -111,25 +130,49 @@ namespace Player
             
             yield return new WaitForSeconds(dodgeTime);
             _isDodging = false;
-            
-            yield return new WaitWhile(system.IsAlive);
-            Destroy(system.gameObject);
         }
 
         public override void MakeDamage()
         {
             foreach (var other in _enemiesBeingAttacked)
             {
-                other.TakeDamage();
+                other.TakeDamage(this);
             }
 
             Destroy(_attackHitbox.gameObject);
         }
 
-        public override void TakeDamage(int damage = 1)
+        public override void TakeDamage(LiveEntity producer = null, int damage = 1)
         {
-            base.TakeDamage(damage);
-            onHealthChanged.Invoke();
+            if (_isBlocking && !producer.IsUnityNull() && 
+                (_watchingRight && producer!.transform.position.x > transform.position.x ||
+                !_watchingRight && producer!.transform.position.x < transform.position.x)
+               ) // can't block damage from environment or backstabs
+            {
+                StartCoroutine(DamageShield(damage));
+                Utility.PlayEffectOnce(blockEffect, this);
+            }
+            else
+            {
+                base.TakeDamage(producer, damage);
+                onHealthChanged.Invoke();
+            }
+        }
+
+        private IEnumerator DamageShield(int deltaStability)
+        {
+            _shieldStability -= deltaStability;
+            ReflectShieldDamage();
+            if (_shieldStability <= 0) SetBlock(false);
+            
+            yield return new WaitForSeconds(shieldStabilityRecoverTime);
+            _shieldStability += deltaStability; // recover stability later
+            ReflectShieldDamage();
+        }
+
+        private void ReflectShieldDamage()
+        {
+            Animator.SetInteger(ShieldDamageInt, shieldDefaultStability - _shieldStability);
         }
     }
 }

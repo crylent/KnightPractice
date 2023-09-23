@@ -9987,6 +9987,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.9999998
       objectReference: {fileID: 0}
+    - target: {fileID: -8194286599753789590, guid: 6605590ee4d832e458c8eb3f15994f7b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -7946841561600392211, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -10092,7 +10097,22 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7062939097770698854, guid: 6605590ee4d832e458c8eb3f15994f7b,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: -6769293337819156500, guid: 6605590ee4d832e458c8eb3f15994f7b,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.7058824
+      objectReference: {fileID: 0}
     - target: {fileID: -5616807435635567588, guid: 6605590ee4d832e458c8eb3f15994f7b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4366729275415797678, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -10101,6 +10121,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1657966471041507432, guid: 6605590ee4d832e458c8eb3f15994f7b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 89365965292238782, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
@@ -10121,6 +10146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424765232544918752, guid: 6605590ee4d832e458c8eb3f15994f7b,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 1722864420687773350, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
@@ -10398,6 +10428,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 77207d40-f1cd-4dca-ada2-705e611e733f
     m_ActionName: gameplay/dodge[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1700306840}
+        m_TargetAssemblyTypeName: Player.PlayerController, Assembly-CSharp
+        m_MethodName: OnBlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ebef09b2-9d28-4cb6-9d9f-d00638f3dc94
+    m_ActionName: gameplay/block[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: gameplay
@@ -10423,6 +10469,10 @@ MonoBehaviour:
   dodgeTime: 0.1
   dodgeManaConsumption: 5
   dodgeEffect: {fileID: 4033287822461114141, guid: a164e676dbbd6e54587237e619372c98,
+    type: 3}
+  shieldDefaultStability: 3
+  shieldStabilityRecoverTime: 15
+  blockEffect: {fileID: 1289151679004632776, guid: 244545ca7bc6b9740aa3bedf5890aa6b,
     type: 3}
   maxMana: 100
   attackHitbox: {fileID: 2126922014243828723, guid: fb77f9a8432593044903df227fbfe734,

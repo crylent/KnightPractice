@@ -40,7 +40,7 @@ public abstract class LiveEntity : MonoBehaviour
         IsAttacking = false;
     }
 
-    public virtual void TakeDamage(int damage = 1)
+    public virtual void TakeDamage(LiveEntity producer = null, int damage = 1)
     {
         Health -= damage;
         Animator.SetTrigger(Health <= 0 ? DeathTrigger : HitTrigger);

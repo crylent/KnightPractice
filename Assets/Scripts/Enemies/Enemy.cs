@@ -32,7 +32,7 @@ namespace Enemies
         {
             if (_hitbox.bounds.Intersects(PlayerComponents.Collider.bounds))
             {
-                PlayerComponents.Controller.TakeDamage();
+                PlayerComponents.Controller.TakeDamage(this);
             }
             Destroy(_hitbox.gameObject);
             _hitbox = null;
