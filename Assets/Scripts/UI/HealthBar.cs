@@ -10,7 +10,6 @@ namespace UI
     {
         [SerializeField] private GameObject life;
         
-        private static int Health => PlayerComponents.Controller.Health;
         private static int MaxHealth => PlayerComponents.Controller.MaxHealth;
         private int _lastHealth;
 
@@ -32,22 +31,14 @@ namespace UI
             _lastHealth = MaxHealth;
         }
 
-        /*private void ClearBar()
+        public void OnHealthChanged(int health)
         {
-            foreach (Transform child in transform)
-            {
-                Destroy(child.gameObject);
-            }
-        }*/
-
-        public void OnHealthChanged()
-        {
-            var deltaSign = Math.Sign(Health - _lastHealth);
-            for (var i = _lastHealth - 1; i != Health + deltaSign && i >= 0 && i < MaxHealth; i += deltaSign)
+            var deltaSign = Math.Sign(health - _lastHealth);
+            for (var i = _lastHealth - 1; i != health + deltaSign && i >= 0 && i < MaxHealth; i += deltaSign)
             {
                 _lives[i].GetComponent<Animator>().SetBool(IsWastedBoolean,deltaSign < 0);
             }
-            _lastHealth = Health;
+            _lastHealth = health;
         }
     }
 }

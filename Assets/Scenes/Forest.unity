@@ -812,7 +812,8 @@ MonoBehaviour:
   consumed: {fileID: 1252094387}
   minFillAmount: 0.227
   maxFillAmount: 0.928
-  consumptionAnimationSpeed: 0.001
+  consumptionAnimationSpeed: 0.002
+  recoveryAnimationSpeed: 0.006
 --- !u!1 &93674029
 GameObject:
   m_ObjectHideFlags: 0
@@ -10472,9 +10473,11 @@ MonoBehaviour:
     type: 3}
   shieldDefaultStability: 3
   shieldStabilityRecoverTime: 15
+  speedFactorWhenBlocking: 0.25
   blockEffect: {fileID: 1289151679004632776, guid: 244545ca7bc6b9740aa3bedf5890aa6b,
     type: 3}
   maxMana: 100
+  manaRecovery: 1
   attackHitbox: {fileID: 2126922014243828723, guid: fb77f9a8432593044903df227fbfe734,
     type: 3}
   onHealthChanged:
@@ -10483,7 +10486,7 @@ MonoBehaviour:
       - m_Target: {fileID: 399757730}
         m_TargetAssemblyTypeName: UI.HealthBar, Assembly-CSharp
         m_MethodName: OnHealthChanged
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10498,7 +10501,7 @@ MonoBehaviour:
       - m_Target: {fileID: 91360300}
         m_TargetAssemblyTypeName: UI.ManaBar, Assembly-CSharp
         m_MethodName: OnManaChanged
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

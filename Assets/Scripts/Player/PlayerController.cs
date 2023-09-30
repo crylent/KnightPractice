@@ -29,19 +29,16 @@ namespace Player
         private bool _isBlocking;
 
         [SerializeField] private float maxMana = 100f;
+        [SerializeField] private float manaRecovery = 1f;
         public float MaxMana => maxMana;
-        public float Mana
-        {
-            get;
-            private set;
-        }
+        private float _mana;
 
         [SerializeField] private Collider attackHitbox;
         private Collider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
         
-        [SerializeField] private UnityEvent onHealthChanged;
-        [SerializeField] private UnityEvent onManaChanged;
+        [SerializeField] private UnityEvent<int> onHealthChanged;
+        [SerializeField] private UnityEvent<float> onManaChanged;
 
         private static readonly int RunAnimSpeed = Animator.StringToHash("runAnimSpeed");
         private static readonly int IsRunningBool = Animator.StringToHash("isRunning");
@@ -53,9 +50,16 @@ namespace Player
         protected override void Start()
         {
             base.Start();
-            Mana = maxMana;
+            _mana = maxMana;
             _shieldStability = shieldDefaultStability;
             PlayerComponents.Init(gameObject);
+        }
+
+        private void Update()
+        {
+            // recover mana
+            _mana = Math.Min(_mana + Time.deltaTime * manaRecovery, maxMana);
+            onManaChanged.Invoke(_mana);
         }
 
         private void FixedUpdate()
@@ -113,7 +117,7 @@ namespace Player
         public void OnDodge(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
-            if (!_isDodging && Mana >= dodgeManaConsumption) StartCoroutine(Dodge());
+            if (!_isDodging && _mana >= dodgeManaConsumption) StartCoroutine(Dodge());
         }
 
         private IEnumerator Dodge()
@@ -125,8 +129,8 @@ namespace Player
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
             
             // consume mana
-            Mana -= dodgeManaConsumption;
-            onManaChanged.Invoke();
+            _mana -= dodgeManaConsumption;
+            onManaChanged.Invoke(_mana);
             
             yield return new WaitForSeconds(dodgeTime);
             _isDodging = false;
@@ -155,7 +159,7 @@ namespace Player
             else
             {
                 base.TakeDamage(producer, damage);
-                onHealthChanged.Invoke();
+                onHealthChanged.Invoke(Health);
             }
         }
 

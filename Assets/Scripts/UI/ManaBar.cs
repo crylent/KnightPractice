@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Player;
 using UnityEngine;
@@ -11,25 +12,34 @@ namespace UI
         [SerializeField] private Image consumed;
         [SerializeField] private float minFillAmount = 0.227f;
         [SerializeField] private float maxFillAmount = 0.928f;
-        [SerializeField] private float consumptionAnimationSpeed = 0.001f;
+        [SerializeField] private float consumptionAnimationSpeed = 0.002f;
+        [SerializeField] private float recoveryAnimationSpeed = 0.006f;
 
-        private static float Mana => PlayerComponents.Controller.Mana;
+        private float _newFillAmount;
         private static float MaxMana => PlayerComponents.Controller.MaxMana;
 
-        public void OnManaChanged()
+        public ManaBar()
         {
-            StartCoroutine(AnimateManaChange());
+            _newFillAmount = maxFillAmount;
         }
 
-        private IEnumerator AnimateManaChange()
+
+        private void FixedUpdate()
         {
-            var newFillAmount = ManaToFillAmount(Mana);
-            filled.fillAmount = newFillAmount;
-            while (consumed.fillAmount > newFillAmount)
+            if (consumed.fillAmount > _newFillAmount)
             {
-                yield return new WaitForFixedUpdate();
                 consumed.fillAmount -= consumptionAnimationSpeed;
             }
+            else if (filled.fillAmount < _newFillAmount)
+            {
+                filled.fillAmount += recoveryAnimationSpeed;
+            }
+        }
+
+        public void OnManaChanged(float mana)
+        {
+            _newFillAmount = ManaToFillAmount(mana);
+            filled.fillAmount = _newFillAmount;
         }
 
         private float ManaToFillAmount(float mana)

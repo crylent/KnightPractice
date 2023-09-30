@@ -10,11 +10,8 @@ public abstract class LiveEntity : MonoBehaviour
 {
     [FormerlySerializedAs("health")] [SerializeField] private int maxHealth;
     public int MaxHealth => maxHealth;
-    public int Health
-    {
-        get;
-        private set;
-    }
+
+    protected int Health;
     
     protected Animator Animator;
     protected Rigidbody Rigidbody;
