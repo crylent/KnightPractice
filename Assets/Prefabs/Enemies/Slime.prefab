@@ -141,7 +141,7 @@ PrefabInstance:
     - target: {fileID: -7552582706839291426, guid: 01236b955f199754e8ce5c20f53fd70b,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5615823817211709712, guid: 01236b955f199754e8ce5c20f53fd70b,
         type: 3}
@@ -282,7 +282,6 @@ MonoBehaviour:
   maxHealth: 3
   takesFireDamage: 1
   fireResistance: 5
-  hitbox: {fileID: 1899805537843731109, guid: 8512b1ef63972cc44b1e9616fe828977, type: 3}
   speed: 3
   attackRange: 13
 --- !u!136 &6339138646066223238

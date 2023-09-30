@@ -1,5 +1,4 @@
 using System;
-using Player;
 using UnityEngine;
 
 namespace Enemies
@@ -7,20 +6,21 @@ namespace Enemies
     public class Slime : Enemy
     {
         [SerializeField] private float speed = 3f;
-        [SerializeField] private float attackRange = 5f;
+        [SerializeField] protected float attackRange = 13f;
         private static readonly int XMovement = Animator.StringToHash("x-movement");
 
         protected override void BehaviorUpdate()
         {
-            var posDiff = PlayerComponents.Transform.position - gameObject.transform.position; // positions difference
-            posDiff.y = 0; // don't consider the height
-            Movement = posDiff.normalized * speed; // chase player
-            
+            Movement = GetDirectionToPlayer() * speed; // chase player
             Animator.SetInteger(XMovement, Math.Sign(Movement.x));
+            AttackBehavior();
+        }
 
-            if (posDiff.magnitude < attackRange)
+        protected virtual void AttackBehavior()
+        {
+            if (GetDistanceToPlayer() < attackRange)
             {
-                Attack();
+                Attack(AttackTrigger);
             }
         }
 

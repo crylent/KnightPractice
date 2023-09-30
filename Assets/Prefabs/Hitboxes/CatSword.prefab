@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2126922014243828723}
   - component: {fileID: -5446033052832921025}
   m_Layer: 0
-  m_Name: DamageCone
+  m_Name: CatSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

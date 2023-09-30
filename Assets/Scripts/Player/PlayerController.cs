@@ -33,8 +33,7 @@ namespace Player
         public float MaxMana => maxMana;
         private float _mana;
 
-        [SerializeField] private Collider attackHitbox;
-        private Collider _attackHitbox;
+        private AttackCollider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
         
         [SerializeField] private UnityEvent<int> onHealthChanged;
@@ -90,15 +89,6 @@ namespace Player
             IsAttacking = true;
             if (_isBlocking) SetBlock(false); // stop blocking
             Animator.SetTrigger(AttackTrigger);
-            _attackHitbox = Instantiate(attackHitbox, transform);
-            if (!_watchingRight) // rotate hitbox to the left
-            {
-                var hitboxTransform = _attackHitbox.transform;
-                var hitboxRot = hitboxTransform.rotation.eulerAngles;
-                hitboxRot.y -= 180;
-                hitboxTransform.rotation = Quaternion.Euler(hitboxRot);
-            }
-            _enemiesBeingAttacked = _attackHitbox.GetComponent<ColliderController>().Enemies;
         }
 
         public void OnBlock(InputAction.CallbackContext context)
@@ -136,7 +126,17 @@ namespace Player
             _isDodging = false;
         }
 
-        public override void MakeDamage()
+        public override void StartAttack(AttackCollider attackCollider)
+        {
+            _attackHitbox = Instantiate(attackCollider, transform);
+            if (!_watchingRight) // rotate hitbox to the left
+            {
+                _attackHitbox.transform.Rotate(0, -180, 0);
+            }
+            _enemiesBeingAttacked = _attackHitbox.GetComponent<AttackCollider>().Enemies;
+        }
+
+        public override void MakeDamage(AttackCollider attackCollider)
         {
             foreach (var other in _enemiesBeingAttacked)
             {

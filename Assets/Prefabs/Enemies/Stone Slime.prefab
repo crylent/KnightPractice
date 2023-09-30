@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6143248413189461669
+--- !u!1001 &5864027485563546101
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -66,22 +66,22 @@ PrefabInstance:
     - target: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       propertyPath: m_Name
-      value: Red Slime
+      value: Stone Slime
       objectReference: {fileID: 0}
     - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 0.3018868
       objectReference: {fileID: 0}
     - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.1764706
+      value: 0.3018868
       objectReference: {fileID: 0}
-    - target: {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465,
+    - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
-      propertyPath: takesFireDamage
-      value: 0
+      propertyPath: m_Color.r
+      value: 0.3018868
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465, type: 3}
@@ -91,33 +91,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5275636179968981528}
+      addedObject: {fileID: -7986467806451042802}
   m_SourcePrefab: {fileID: 100100000, guid: 9262319ee22607a42b947e2da54f9465, type: 3}
---- !u!1 &7126984272247216963 stripped
+--- !u!1 &7406209584598148115 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
     type: 3}
-  m_PrefabInstance: {fileID: 6143248413189461669}
+  m_PrefabInstance: {fileID: 5864027485563546101}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5275636179968981528
+--- !u!114 &-7986467806451042802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7126984272247216963}
+  m_GameObject: {fileID: 7406209584598148115}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c27038279959214f9cf3913955c22b4, type: 3}
+  m_Script: {fileID: 11500000, guid: d3a83e294a1532c4ea0c3c4e05006aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
-  takesFireDamage: 0
-  fireResistance: 1
-  hitbox: {fileID: 1899805537843731109, guid: 8512b1ef63972cc44b1e9616fe828977, type: 3}
-  speed: 5
+  maxHealth: 5
+  takesFireDamage: 1
+  fireResistance: 5
+  speed: 2.5
   attackRange: 13
-  fireEffect: {fileID: 5987572886358014243, guid: 7af9a79e403fbce42a47c9e6416bdb8d,
-    type: 3}
-  fireCooldown: 1.5
-  fireLifetime: 20
+  jumpAttackRange: 20
+  jumpAttackCooldown: 3

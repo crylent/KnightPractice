@@ -14,6 +14,7 @@ public abstract class LiveEntity : MonoBehaviour
     protected int Health;
     
     protected Animator Animator;
+    protected Collider Collider;
     protected Rigidbody Rigidbody;
     protected bool IsAttacking;
     
@@ -29,9 +30,11 @@ public abstract class LiveEntity : MonoBehaviour
         Health = maxHealth;
         Animator = gameObject.GetComponent<Animator>();
         Rigidbody = gameObject.GetComponent<Rigidbody>();
+        Collider = gameObject.GetComponent<Collider>();
     }
 
-    public abstract void MakeDamage();
+    public virtual void StartAttack(AttackCollider collider) {}
+    public abstract void MakeDamage(AttackCollider collider);
     public void AfterAttack()
     {
         IsAttacking = false;
