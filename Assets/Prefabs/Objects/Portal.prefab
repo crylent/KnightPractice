@@ -9763,8 +9763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyToSpawn: {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465,
     type: 3}
-  spawnTime: 2.5
-  existenceTime: 5
+  spawnTime: 1.5
+  existenceTime: 3
 --- !u!1 &8079825068611583715
 GameObject:
   m_ObjectHideFlags: 0
