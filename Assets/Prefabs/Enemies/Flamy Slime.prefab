@@ -21,7 +21,7 @@ PrefabInstance:
     - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
@@ -66,7 +66,7 @@ PrefabInstance:
     - target: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       propertyPath: m_Name
-      value: Fire Slime
+      value: Flamy Slime
       objectReference: {fileID: 0}
     - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
@@ -119,4 +119,4 @@ MonoBehaviour:
   fireEffect: {fileID: 5987572886358014243, guid: 7af9a79e403fbce42a47c9e6416bdb8d,
     type: 3}
   fireCooldown: 1.5
-  fireLifetime: 20
+  fireLifetime: 15

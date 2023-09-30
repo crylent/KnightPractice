@@ -281,8 +281,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   takesFireDamage: 1
-  fireResistance: 5
-  speed: 3
+  fireResistance: 2
+  speed: 5
   attackRange: 13
 --- !u!136 &6339138646066223238
 CapsuleCollider:
