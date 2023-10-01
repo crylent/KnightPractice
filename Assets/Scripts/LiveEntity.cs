@@ -33,8 +33,8 @@ public abstract class LiveEntity : MonoBehaviour
         Collider = gameObject.GetComponent<Collider>();
     }
 
-    public virtual void StartAttack(AttackCollider collider) {}
-    public abstract void MakeDamage(AttackCollider collider);
+    public virtual void StartAttack(AttackCollider attackCollider) {}
+    public abstract void MakeDamage(AttackCollider attackCollider);
     public void AfterAttack()
     {
         IsAttacking = false;
@@ -70,6 +70,7 @@ public abstract class LiveEntity : MonoBehaviour
     {
         while (_fireInstancesColliding.Count > 0)
         {
+            Debug.Log(_fireInstancesColliding.Count);
             PlayerComponents.Controller.TakeDamage();
             yield return new WaitForSeconds(fireResistance);
         }

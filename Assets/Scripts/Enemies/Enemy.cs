@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Player;
 using UnityEngine;
@@ -10,9 +11,11 @@ namespace Enemies
 
         private OpacityController.OpacityController _opacityController;
 
+        [NonSerialized] public bool BehaviorEnabled = false;
+
         protected void Update()
         {
-            BehaviorUpdate();
+            if (BehaviorEnabled) BehaviorUpdate();
             _posDiff = PlayerComponents.Transform.position - gameObject.transform.position; // positions difference
             _posDiff.y = 0; // don't consider the height
         }
@@ -35,6 +38,7 @@ namespace Enemies
         private IEnumerator MakeDamageCoroutine(AttackCollider attackCollider)
         {
             var hitbox = Instantiate(attackCollider, gameObject.transform);
+            hitbox.transform.parent = null; // detach from parent to ignore other attack colliders
             yield return new WaitForFixedUpdate(); // wait for OnTriggerEnter execution
             if (hitbox.PlayerIsInside)
             {
@@ -53,6 +57,12 @@ namespace Enemies
         protected float GetDistanceToPlayer()
         {
             return _posDiff.magnitude;
+        }
+
+        public override void TakeDamage(LiveEntity producer = null, int damage = 1)
+        {
+            base.TakeDamage(producer, damage);
+            BehaviorEnabled = false; // no more attacks from the grave
         }
     }
 }

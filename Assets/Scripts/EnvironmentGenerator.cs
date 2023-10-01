@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utility;
 using Random = UnityEngine.Random;
 
 public class EnvironmentGenerator : MonoBehaviour
@@ -16,7 +17,7 @@ public class EnvironmentGenerator : MonoBehaviour
     {
         for (uint i = 0; i < objectsNumber; i++)
         {
-            var position = Utility.RandomPosition(worldSize);
+            var position = CustomRandom.GetPosition(worldSize);
             if (!CheckDistance(position))
             {
                 i--; continue;

@@ -115,7 +115,7 @@ namespace Player
             _isDodging = true;
             
             yield return new WaitWhile(() => IsAttacking); // can't dodge while attacking, but will do it after finishing
-            Utility.PlayEffectOnce(dodgeEffect, this);
+            Utility.Effects.PlayEffectOnce(dodgeEffect, this);
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
             
             // consume mana
@@ -133,6 +133,7 @@ namespace Player
             {
                 _attackHitbox.transform.Rotate(0, -180, 0);
             }
+            _attackHitbox.transform.parent = null; // detach from parent to ignore other attack colliders
             _enemiesBeingAttacked = _attackHitbox.GetComponent<AttackCollider>().Enemies;
         }
 
@@ -154,7 +155,7 @@ namespace Player
                ) // can't block damage from environment or backstabs
             {
                 StartCoroutine(DamageShield(damage));
-                Utility.PlayEffectOnce(blockEffect, this);
+                Utility.Effects.PlayEffectOnce(blockEffect, this);
             }
             else
             {

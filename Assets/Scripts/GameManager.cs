@@ -2,6 +2,7 @@ using System.Collections;
 using Enemies;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utility;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
     {
         var portal = Instantiate(
             portalPrefab, 
-            Utility.RandomPosition(spawnArea) + portalPrefab.transform.position,
+            CustomRandom.GetPosition(spawnArea) + portalPrefab.transform.position,
             Quaternion.identity
             );
         portal.enemyToSpawn = enemy;

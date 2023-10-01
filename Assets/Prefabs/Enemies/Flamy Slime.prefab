@@ -116,7 +116,7 @@ MonoBehaviour:
   fireResistance: 1
   speed: 5
   attackRange: 13
-  fireEffect: {fileID: 5987572886358014243, guid: 7af9a79e403fbce42a47c9e6416bdb8d,
+  fireEffect: {fileID: 9030465897247084669, guid: 7af9a79e403fbce42a47c9e6416bdb8d,
     type: 3}
   fireCooldown: 1.5
   fireLifetime: 15
