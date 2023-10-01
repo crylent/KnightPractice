@@ -35,7 +35,7 @@ public abstract class LiveEntity : MonoBehaviour
 
     public virtual void StartAttack(AttackCollider attackCollider) {}
     public abstract void MakeDamage(AttackCollider attackCollider);
-    public void AfterAttack()
+    public virtual void AfterAttack()
     {
         IsAttacking = false;
     }

@@ -44,6 +44,7 @@ namespace Player
         private static readonly int IsWatchingRightBool = Animator.StringToHash("isWatchingRight");
         private static readonly int IsBlockingBool = Animator.StringToHash("isBlocking");
         private static readonly int ShieldDamageInt = Animator.StringToHash("shieldDamage");
+        private static readonly int GoToSecondAttackBool = Animator.StringToHash("goToSecondAttack");
 
         // Start is called before the first frame update
         protected override void Start()
@@ -82,10 +83,22 @@ namespace Player
             Animator.SetBool(IsRunningBool, deltaX != 0 || deltaZ != 0);
         }
 
+        private bool _prepareOneMoreAttack;
+
         public void OnAttack(InputAction.CallbackContext context)
         {
-            if (!context.performed || IsAttacking || _isDodging) return;
-            
+            if (!context.performed || _isDodging) return;
+            if (IsAttacking)
+            {
+                _prepareOneMoreAttack = true;
+                Animator.SetBool(GoToSecondAttackBool, true);
+                return;
+            }
+            Attack();
+        }
+
+        private void Attack()
+        {
             IsAttacking = true;
             if (_isBlocking) SetBlock(false); // stop blocking
             Animator.SetTrigger(AttackTrigger);
@@ -145,6 +158,15 @@ namespace Player
             }
 
             Destroy(_attackHitbox.gameObject);
+        }
+
+        public override void AfterAttack()
+        {
+            base.AfterAttack();
+            
+            if (!_prepareOneMoreAttack) return;
+            _prepareOneMoreAttack = false;
+            Animator.SetBool(GoToSecondAttackBool, false);
         }
 
         public override void TakeDamage(LiveEntity producer = null, int damage = 1)
