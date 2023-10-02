@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Player;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemies
@@ -44,6 +45,10 @@ namespace Enemies
             {
                 PlayerComponents.Controller.TakeDamage(this, hitbox.Damage);
             }
+
+            var childSystem = hitbox.GetComponentInChildren<ParticleSystem>();
+            if (childSystem.IsUnityNull()) yield break;
+            yield return new WaitWhile(() => childSystem.IsAlive()); // if has child particle system, delay destroying
             Destroy(hitbox.gameObject);
         }
 
