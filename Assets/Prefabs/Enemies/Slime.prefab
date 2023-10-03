@@ -183,6 +183,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 91.219
       objectReference: {fileID: 0}
+    - target: {fileID: 4231023618171091304, guid: 01236b955f199754e8ce5c20f53fd70b,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5281328724533119634, guid: 01236b955f199754e8ce5c20f53fd70b,
         type: 3}
       propertyPath: m_IsActive
@@ -284,6 +289,9 @@ MonoBehaviour:
   fireResistance: 2
   speed: 5
   attackRange: 13
+  spurtRange: 25
+  spurtCooldown: 5
+  freezeTimeAfterSpurt: 1
 --- !u!136 &6339138646066223238
 CapsuleCollider:
   m_ObjectHideFlags: 0

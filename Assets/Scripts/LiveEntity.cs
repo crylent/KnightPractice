@@ -12,6 +12,7 @@ public abstract class LiveEntity : MonoBehaviour
     public int MaxHealth => maxHealth;
 
     protected int Health;
+    public bool IsAlive => Health > 0;
     
     protected Animator Animator;
     protected Collider Collider;
@@ -43,7 +44,7 @@ public abstract class LiveEntity : MonoBehaviour
     public virtual void TakeDamage(LiveEntity producer = null, int damage = 1)
     {
         Health -= damage;
-        Animator.SetTrigger(Health <= 0 ? DeathTrigger : HitTrigger);
+        Animator.SetTrigger(IsAlive ? HitTrigger : DeathTrigger);
     }
     
     // FIRE DAMAGE CONTROLLER

@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4d39f124d401184dba5ff63e80092d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackName: JumpAndFall
   damage: 1
 --- !u!1001 &543736194367813306
 PrefabInstance:

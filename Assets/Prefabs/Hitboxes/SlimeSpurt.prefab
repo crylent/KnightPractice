@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1899805537843731109}
   - component: {fileID: 7655435341382510562}
   m_Layer: 0
-  m_Name: SlimePush
+  m_Name: SlimeSpurt
   m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,5 +75,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4d39f124d401184dba5ff63e80092d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackName: Push
+  attackName: Spurt
   damage: 1

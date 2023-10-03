@@ -116,5 +116,8 @@ MonoBehaviour:
   fireResistance: 5
   speed: 4
   attackRange: 13
+  spurtRange: 25
+  spurtCooldown: 5
+  freezeTimeAfterSpurt: 1
   jumpAttackRange: 20
   jumpAttackCooldown: 3

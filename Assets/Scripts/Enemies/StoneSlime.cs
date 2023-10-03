@@ -6,24 +6,29 @@ namespace Enemies
     public class StoneSlime : Slime
     {
         [SerializeField] private float jumpAttackRange = 20f;
-        [SerializeField] private float jumpAttackCooldown = 5f; // cooldown after attack finished
+        [SerializeField] private float jumpAttackCooldown = 5f;
 
-        private bool _canPerformJumpAttack = true;
+        //private bool _canPerformJumpAttack = true;
+        private readonly ActionCooldown _jumpAttackCooldown;
             
         private static readonly int JumpAttackTrigger = Animator.StringToHash("onJump");
 
+        public StoneSlime()
+        {
+            _jumpAttackCooldown = new ActionCooldown(this, jumpAttackCooldown);
+        }
+
         protected override void AttackBehavior()
         {
-            var distance = GetDistanceToPlayer();
-            if (distance < jumpAttackRange && _canPerformJumpAttack)
+            if (GetDistanceToPlayer() < jumpAttackRange && _jumpAttackCooldown.CanPerform)
             {
                 Collider.enabled = false; // disable collider while not on the ground
                 Attack(JumpAttackTrigger);
-                StartCoroutine(DisableJumpAttack());
+                _jumpAttackCooldown.Cooldown();
             }
-            else if (GetDistanceToPlayer() < attackRange)
+            else
             {
-                Attack(AttackTrigger);
+                base.AttackBehavior();
             }
         }
 
@@ -31,14 +36,6 @@ namespace Enemies
         {
             base.MakeDamage(attackCollider);
             Collider.enabled = true;
-        }
-
-        private IEnumerator DisableJumpAttack()
-        {
-            _canPerformJumpAttack = false;
-            yield return new WaitWhile(() => IsAttacking);
-            yield return new WaitForSeconds(jumpAttackCooldown);
-            _canPerformJumpAttack = true;
         }
     }
 }

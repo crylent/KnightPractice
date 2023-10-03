@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class AttackCollider : MonoBehaviour
 {
+    [SerializeField] private string attackName;
+    public string AttackName => attackName;
+    
     [SerializeField] private int damage = 1;
     public int Damage => damage;
-
-    //[SerializeField] private bool forwardInstantiation; // instantiate collider on attack state enter
-    //public bool ForwardInstantiation => forwardInstantiation;
     
     public bool PlayerIsInside { get; private set; }
     public HashSet<Enemy> Enemies { get; } = new();

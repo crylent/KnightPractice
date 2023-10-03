@@ -47,8 +47,8 @@ namespace Enemies
             }
 
             var childSystem = hitbox.GetComponentInChildren<ParticleSystem>();
-            if (childSystem.IsUnityNull()) yield break;
-            yield return new WaitWhile(() => childSystem.IsAlive()); // if has child particle system, delay destroying
+            if (!childSystem.IsUnityNull()) // if has child particle system, delay destroying
+                yield return new WaitWhile(() => childSystem.IsAlive());
             Destroy(hitbox.gameObject);
         }
 
@@ -67,7 +67,33 @@ namespace Enemies
         public override void TakeDamage(LiveEntity producer = null, int damage = 1)
         {
             base.TakeDamage(producer, damage);
-            if (Health <= 0) BehaviorEnabled = false; // no more attacks from the grave
+            if (!IsAlive) BehaviorEnabled = false; // no more attacks from the grave
+        }
+        
+        protected class ActionCooldown
+        {
+            private bool _onCooldown;
+            public bool CanPerform => !_onCooldown;
+            private readonly MonoBehaviour _owner;
+            private readonly float _cooldownTime;
+
+            public ActionCooldown(MonoBehaviour owner, float cooldownTime)
+            {
+                _owner = owner;
+                _cooldownTime = cooldownTime;
+            }
+
+            public void Cooldown()
+            {
+                _owner.StartCoroutine(CooldownCoroutine());
+            }
+
+            private IEnumerator CooldownCoroutine()
+            {
+                _onCooldown = true;
+                yield return new WaitForSeconds(_cooldownTime);
+                _onCooldown = false;
+            }
         }
     }
 }
