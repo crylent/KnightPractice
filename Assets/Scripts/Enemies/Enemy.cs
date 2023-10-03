@@ -12,7 +12,7 @@ namespace Enemies
 
         private OpacityController.OpacityController _opacityController;
 
-        [NonSerialized] public bool BehaviorEnabled = false;
+        [NonSerialized] public bool BehaviorEnabled;
 
         protected void Update()
         {
@@ -67,7 +67,7 @@ namespace Enemies
         public override void TakeDamage(LiveEntity producer = null, int damage = 1)
         {
             base.TakeDamage(producer, damage);
-            BehaviorEnabled = false; // no more attacks from the grave
+            if (Health <= 0) BehaviorEnabled = false; // no more attacks from the grave
         }
     }
 }
