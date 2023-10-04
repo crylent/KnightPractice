@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using JetBrains.Annotations;
+using Sprites;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemies
 {
+    [RequireComponent(typeof(ColorMultiplier))]
     public class Slime : Enemy
     {
         [SerializeField] private float speed = 3f;

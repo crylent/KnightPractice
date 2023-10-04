@@ -12,8 +12,6 @@ namespace Enemies
         
         protected Vector3 Movement = Vector3.zero;
 
-        private OpacityController.OpacityController _opacityController;
-
         [NonSerialized] public bool BehaviorEnabled;
 
         protected void Update()

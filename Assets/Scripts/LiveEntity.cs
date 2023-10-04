@@ -5,7 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(Animator), typeof(Rigidbody))]
+[RequireComponent(
+    typeof(Animator), 
+    typeof(Rigidbody), 
+    typeof(Collider)
+    )]
 public abstract class LiveEntity : MonoBehaviour
 {
     [FormerlySerializedAs("health")] [SerializeField] private int maxHealth;
