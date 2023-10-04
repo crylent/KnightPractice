@@ -284,12 +284,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 967800ccf0f996b458f453fb0408d500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
   maxHealth: 3
-  takesFireDamage: 1
-  fireResistance: 2
+  fireResistance: 0.5
+  iceResistance: 0.5
   threatArrow: {fileID: 3391677093500002457, guid: 3a69bdf33e01d62409f9176a509f9d0d,
     type: 3}
-  speed: 5
   attackRange: 13
   spurtRange: 25
   spurtCooldown: 5

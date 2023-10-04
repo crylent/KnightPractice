@@ -14,8 +14,9 @@ namespace Enemies
 
         [NonSerialized] public bool BehaviorEnabled;
 
-        protected void Update()
+        protected override void Update()
         {
+            base.Update();
             if (BehaviorEnabled) BehaviorUpdate();
             _posDiff = PlayerComponents.Transform.position - gameObject.transform.position; // positions difference
             _posDiff.y = 0; // don't consider the height

@@ -72,4 +72,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 
+
 /.idea/*
+
+# Unused packages from asset store
+/[Aa]ssets/MaybeINeedItLater/*
+/[Aa]ssets/MaybeINeedItLater.meta

@@ -11,7 +11,6 @@ namespace Player
 {
     public class PlayerController : LiveEntity
     {
-        [SerializeField] private float speed = 50f;
         private Vector3 _deltaMove;
         private bool _watchingRight;
         
@@ -55,8 +54,9 @@ namespace Player
             PlayerComponents.Init(gameObject);
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             // recover mana
             _mana = Math.Min(_mana + Time.deltaTime * manaRecovery, maxMana);
             onManaChanged.Invoke(_mana);
@@ -67,7 +67,7 @@ namespace Player
             if (_isDodging) return; // ignore default movement when dodging
             var movement = !IsAttacking ? _deltaMove : Vector3.zero; // stop movement when attacking
             if (_isBlocking) movement *= speedFactorWhenBlocking; // slow down movement when blocking
-            Rigidbody.velocity = speed * movement;
+            Rigidbody.velocity = Speed * movement;
         }
 
         public void OnMove(InputAction.CallbackContext context)

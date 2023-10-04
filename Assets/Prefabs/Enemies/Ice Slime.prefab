@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7720303512893801840
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_Name
+      value: Ice Slime
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710779057793662271, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.23529412
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 6181020555903539429}
+  m_SourcePrefab: {fileID: 100100000, guid: 9262319ee22607a42b947e2da54f9465, type: 3}
+--- !u!1 &6669011539854936214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
+    type: 3}
+  m_PrefabInstance: {fileID: 7720303512893801840}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6181020555903539429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6669011539854936214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c27038279959214f9cf3913955c22b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  maxHealth: 3
+  fireResistance: 0
+  iceResistance: 1
+  threatArrow: {fileID: 3391677093500002457, guid: 3a69bdf33e01d62409f9176a509f9d0d,
+    type: 3}
+  attackRange: 13
+  spurtRange: 25
+  spurtCooldown: 5
+  freezeTimeAfterSpurt: 1
+  fireEffect: {fileID: 7104374986759596917, guid: 3787470635cedf749963f7b8730e9e6f,
+    type: 3}
+  fireCooldown: 1.5
+  fireLifetime: 15

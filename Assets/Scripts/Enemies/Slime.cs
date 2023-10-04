@@ -10,7 +10,6 @@ namespace Enemies
     [RequireComponent(typeof(ColorMultiplier))]
     public class Slime : Enemy
     {
-        [SerializeField] private float speed = 3f;
         [SerializeField] private float attackRange = 13f;
         [SerializeField] private float spurtRange = 25f;
         [SerializeField] private float spurtCooldown = 5f;
@@ -37,7 +36,7 @@ namespace Enemies
         protected override void BehaviorUpdate()
         {
             if (!_allBehaviorCooldown.CanPerform) return;
-            Movement = GetDirectionToPlayer() * speed; // chase player
+            Movement = GetDirectionToPlayer() * Speed; // chase player
             Animator.SetInteger(XMovement, Math.Sign(Movement.x));
             AttackBehavior();
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Player;
@@ -12,6 +13,9 @@ using UnityEngine.Serialization;
     )]
 public abstract class LiveEntity : MonoBehaviour
 {
+    [SerializeField] private float speed = 50f;
+    protected float Speed => !_isFrozen ? speed : speed * 0.5f; // slower when frozen
+    
     [FormerlySerializedAs("health")] [SerializeField] private int maxHealth;
     public int MaxHealth => maxHealth;
 
@@ -27,8 +31,8 @@ public abstract class LiveEntity : MonoBehaviour
     private static readonly int HitTrigger = Animator.StringToHash("onHit");
     private static readonly int DeathTrigger = Animator.StringToHash("onDeath");
 
-    [SerializeField] private bool takesFireDamage = true;
-    [SerializeField] private float fireResistance = 1f; // affects how frequently entity is damaged by fire
+    [SerializeField] private float fireResistance; // by default, fire makes 1 damage in 1 second; resistance increase this time
+    [SerializeField] private float iceResistance; // by default, ice bar becomes full in 1 second; resistance increase this time
 
     protected virtual void Start()
     {
@@ -51,42 +55,63 @@ public abstract class LiveEntity : MonoBehaviour
         Animator.SetTrigger(IsAlive ? HitTrigger : DeathTrigger);
     }
     
-    // FIRE DAMAGE CONTROLLER
+    // PERIODIC DAMAGE CONTROLLER
     private readonly List<GameObject> _fireInstancesColliding = new();
+    private readonly List<GameObject> _iceInstancesColliding = new();
+    private float _freeze;
+    private bool _isFrozen;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Fire") || !takesFireDamage) return;
-        _fireInstancesColliding.Add(other.gameObject);
-        StartCoroutine(RemoveAfterDestroying(other.gameObject));
-        if (_fireInstancesColliding.Count == 1) // avoid double damaging
+        if (other.CompareTag("Fire") && fireResistance < 1f)
         {
-            StartCoroutine(StartApplyingFireDamage());
+            _fireInstancesColliding.Add(other.gameObject);
+            StartCoroutine(RemoveAfterDestroying(other.gameObject));
+            if (_fireInstancesColliding.Count == 1) // avoid double damaging
+            {
+                StartCoroutine(StartApplyingFireDamage());
+            }
         }
+        else if (other.CompareTag("Ice") && iceResistance < 1f)
+        {
+            _iceInstancesColliding.Add(other.gameObject);
+            StartCoroutine(RemoveAfterDestroying(other.gameObject));
+        }
+    }
+
+    protected virtual void Update()
+    {
+        _freeze = _iceInstancesColliding.Count > 0 ?
+            Math.Min(_freeze + 1f / (1f - iceResistance) * Time.deltaTime, 1f) :
+            Math.Max(_freeze - 0.1f * Time.deltaTime, 0f);
+        _isFrozen = _freeze switch
+        {
+            >= 1f when !_isFrozen => true,
+            <= 0f when _isFrozen => false,
+            _ => _isFrozen
+        };
+        Debug.Log($"{_freeze} {_isFrozen}");
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Fire") || !takesFireDamage) return;
-        _fireInstancesColliding.Remove(other.gameObject);
+        if (other.CompareTag("Fire") && fireResistance < 1f) _fireInstancesColliding.Remove(other.gameObject);
+        else if (other.CompareTag("Ice") && iceResistance < 1f) _iceInstancesColliding.Remove(other.gameObject);
     }
 
     private IEnumerator StartApplyingFireDamage()
     {
         while (_fireInstancesColliding.Count > 0)
         {
-            Debug.Log(_fireInstancesColliding.Count);
-            PlayerComponents.Controller.TakeDamage();
-            yield return new WaitForSeconds(fireResistance);
+            TakeDamage();
+            yield return new WaitForSeconds(1f / (1f - fireResistance));
         }
     }
 
-    private IEnumerator RemoveAfterDestroying(GameObject fire)
+    private IEnumerator RemoveAfterDestroying(GameObject obj)
     {
-        yield return new WaitUntil(fire.IsDestroyed);
-        if (_fireInstancesColliding.Contains(fire))
-        {
-            _fireInstancesColliding.Remove(fire);
-        }
+        yield return new WaitUntil(obj.IsDestroyed);
+        if (_fireInstancesColliding.Contains(obj)) _fireInstancesColliding.Remove(obj);
+        else if (_iceInstancesColliding.Contains(obj)) _iceInstancesColliding.Remove(obj);
     }
 }
