@@ -114,6 +114,8 @@ MonoBehaviour:
   maxHealth: 3
   takesFireDamage: 0
   fireResistance: 1
+  threatArrow: {fileID: 3391677093500002457, guid: 3a69bdf33e01d62409f9176a509f9d0d,
+    type: 3}
   speed: 5
   attackRange: 13
   spurtRange: 25

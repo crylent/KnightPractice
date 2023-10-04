@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemies
@@ -14,6 +16,7 @@ namespace Enemies
 
         private readonly ActionCooldown _allBehaviorCooldown;
         private readonly ActionCooldown _spurtCooldown;
+        [CanBeNull] private GameObject _spurtArrow;
         
         private static readonly int XMovement = Animator.StringToHash("x-movement");
         private static readonly int SpurtTrigger = Animator.StringToHash("onSpurt");
@@ -22,6 +25,11 @@ namespace Enemies
         {
             _spurtCooldown = new ActionCooldown(this, spurtCooldown);
             _allBehaviorCooldown = new ActionCooldown(this, freezeTimeAfterSpurt);
+        }
+
+        private void LateUpdate()
+        {
+            if (!_spurtArrow.IsUnityNull()) _spurtArrow!.transform.rotation = GetRotationToPlayer();
         }
 
         protected override void BehaviorUpdate()
@@ -37,6 +45,10 @@ namespace Enemies
             var distance = GetDistanceToPlayer();
             if (distance < spurtRange && _spurtCooldown.CanPerform)
             {
+                _spurtArrow = Instantiate(
+                    threatArrow, 
+                    transform.position + threatArrow.transform.position,
+                    GetRotationToPlayer());
                 Attack(SpurtTrigger);
                 _spurtCooldown.Cooldown();
             }
@@ -49,10 +61,9 @@ namespace Enemies
         public override void StartAttack(AttackCollider attackCollider)
         {
             if (!IsAlive) return;
-            if (attackCollider.AttackName == "Spurt")
-            {
-                StartCoroutine(Spurt());
-            }
+            if (attackCollider.AttackName != "Spurt") return;
+            _spurtArrow = null;
+            StartCoroutine(Spurt());
         }
 
         private IEnumerator Spurt()

@@ -8,6 +8,8 @@ namespace Enemies
 {
     public abstract class Enemy : LiveEntity
     {
+        [SerializeField] protected GameObject threatArrow;
+        
         protected Vector3 Movement = Vector3.zero;
 
         private OpacityController.OpacityController _opacityController;
@@ -57,6 +59,12 @@ namespace Enemies
         protected Vector3 GetDirectionToPlayer()
         {
             return _posDiff.normalized;
+        }
+
+        protected Quaternion GetRotationToPlayer()
+        {
+            var angle = Vector3.SignedAngle(_posDiff, Vector3.forward, Vector3.down);
+            return Quaternion.Euler(90, angle, 0);
         }
 
         protected float GetDistanceToPlayer()
