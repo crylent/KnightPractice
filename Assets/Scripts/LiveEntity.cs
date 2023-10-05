@@ -18,7 +18,7 @@ using Utility;
 public abstract class LiveEntity : MonoBehaviour
 {
     [SerializeField] private float speed = 50f;
-    protected float Speed => !_isFrozen ? speed : speed * 0.5f; // slower when frozen
+    protected float Speed => !IsFrozen ? speed : speed * 0.5f; // slower when frozen
     
     [FormerlySerializedAs("health")] [SerializeField] private int maxHealth;
     public int MaxHealth => maxHealth;
@@ -68,7 +68,7 @@ public abstract class LiveEntity : MonoBehaviour
     private readonly List<GameObject> _fireInstancesColliding = new();
     private readonly List<GameObject> _iceInstancesColliding = new();
     protected float Freeze;
-    private bool _isFrozen;
+    protected bool IsFrozen;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -93,19 +93,19 @@ public abstract class LiveEntity : MonoBehaviour
         Freeze = _iceInstancesColliding.Count > 0 ?
             Math.Min(Freeze + 1f / (1f - iceResistance) * Time.deltaTime, 1f) :
             Math.Max(Freeze - 0.1f * Time.deltaTime, 0f);
-        _isFrozen = Freeze switch
+        IsFrozen = Freeze switch
         {
-            >= 1f when !_isFrozen => true,
-            <= 0f when _isFrozen => false,
-            _ => _isFrozen
+            >= 1f when !IsFrozen => true,
+            <= 0f when IsFrozen => false,
+            _ => IsFrozen
         };
 
         // ReSharper disable once ConvertIfStatementToSwitchStatement
-        if (!_frozenEffectHandler.HasInstance && _isFrozen) // add frozen effect
+        if (!_frozenEffectHandler.HasInstance && IsFrozen) // add frozen effect
         {
             _frozenEffectHandler.Instantiate();
         }
-        else if (_frozenEffectHandler.HasInstance && !_isFrozen) // remove frozen effect
+        else if (_frozenEffectHandler.HasInstance && !IsFrozen) // remove frozen effect
         {
             Effects.StopEffect(_frozenEffectHandler.PopInstance());
         }

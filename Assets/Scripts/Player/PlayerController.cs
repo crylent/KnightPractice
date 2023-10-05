@@ -83,6 +83,7 @@ namespace Player
             _watchingRight = deltaX > 0 || (deltaX == 0 && (deltaZ > 0 || (deltaZ == 0 && _watchingRight)));
             Animator.SetBool(IsWatchingRightBool, _watchingRight);
             Animator.SetBool(IsRunningBool, deltaX != 0 || deltaZ != 0);
+            Animator.SetFloat(RunAnimSpeed, (_isBlocking ? 0.5f : 1f) * (IsFrozen ? 0.75f : 1f));
         }
 
         private bool _prepareOneMoreAttack;
@@ -116,7 +117,6 @@ namespace Player
         {
             _isBlocking = blocking;
             Animator.SetBool(IsBlockingBool, blocking);
-            Animator.SetFloat(RunAnimSpeed, blocking ? 0.5f : 1f);
         }
 
         public void OnDodge(InputAction.CallbackContext context)
