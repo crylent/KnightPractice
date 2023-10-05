@@ -37,6 +37,7 @@ namespace Player
         
         [SerializeField] private UnityEvent<int> onHealthChanged;
         [SerializeField] private UnityEvent<float> onManaChanged;
+        [SerializeField] private UnityEvent<float> onFreezeChanged;
 
         private static readonly int RunAnimSpeed = Animator.StringToHash("runAnimSpeed");
         private static readonly int IsRunningBool = Animator.StringToHash("isRunning");
@@ -60,6 +61,7 @@ namespace Player
             // recover mana
             _mana = Math.Min(_mana + Time.deltaTime * manaRecovery, maxMana);
             onManaChanged.Invoke(_mana);
+            onFreezeChanged.Invoke(Freeze);
         }
 
         private void FixedUpdate()

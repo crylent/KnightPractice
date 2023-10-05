@@ -58,7 +58,7 @@ public abstract class LiveEntity : MonoBehaviour
     // PERIODIC DAMAGE CONTROLLER
     private readonly List<GameObject> _fireInstancesColliding = new();
     private readonly List<GameObject> _iceInstancesColliding = new();
-    private float _freeze;
+    protected float Freeze;
     private bool _isFrozen;
 
     private void OnTriggerEnter(Collider other)
@@ -81,16 +81,15 @@ public abstract class LiveEntity : MonoBehaviour
 
     protected virtual void Update()
     {
-        _freeze = _iceInstancesColliding.Count > 0 ?
-            Math.Min(_freeze + 1f / (1f - iceResistance) * Time.deltaTime, 1f) :
-            Math.Max(_freeze - 0.1f * Time.deltaTime, 0f);
-        _isFrozen = _freeze switch
+        Freeze = _iceInstancesColliding.Count > 0 ?
+            Math.Min(Freeze + 1f / (1f - iceResistance) * Time.deltaTime, 1f) :
+            Math.Max(Freeze - 0.1f * Time.deltaTime, 0f);
+        _isFrozen = Freeze switch
         {
             >= 1f when !_isFrozen => true,
             <= 0f when _isFrozen => false,
             _ => _isFrozen
         };
-        Debug.Log($"{_freeze} {_isFrozen}");
     }
 
     private void OnTriggerExit(Collider other)
