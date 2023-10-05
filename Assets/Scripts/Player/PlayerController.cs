@@ -40,6 +40,7 @@ namespace Player
         [SerializeField] private UnityEvent<float> onFreezeChanged;
 
         private static readonly int RunAnimSpeed = Animator.StringToHash("runAnimSpeed");
+        private static readonly int AttackAnimSpeed = Animator.StringToHash("attackAnimSpeed");
         private static readonly int IsRunningBool = Animator.StringToHash("isRunning");
         private static readonly int IsWatchingRightBool = Animator.StringToHash("isWatchingRight");
         private static readonly int IsBlockingBool = Animator.StringToHash("isBlocking");
@@ -58,8 +59,7 @@ namespace Player
         protected override void Update()
         {
             base.Update();
-            // recover mana
-            _mana = Math.Min(_mana + Time.deltaTime * manaRecovery, maxMana);
+            if (!IsFrozen) _mana = Math.Min(_mana + Time.deltaTime * manaRecovery, maxMana); // recover mana
             onManaChanged.Invoke(_mana);
             onFreezeChanged.Invoke(Freeze);
         }
@@ -105,7 +105,10 @@ namespace Player
             IsAttacking = true;
             if (_isBlocking) SetBlock(false); // stop blocking
             Animator.SetTrigger(AttackTrigger);
+            Animator.SetFloat(AttackAnimSpeed, AttackAnimationSpeed);
         }
+
+        private float AttackAnimationSpeed => IsFrozen ? 0.5f : 1f;
 
         public void OnBlock(InputAction.CallbackContext context)
         {
@@ -144,6 +147,11 @@ namespace Player
         public override void StartAttack(AttackCollider attackCollider)
         {
             _attackHitbox = Instantiate(attackCollider, transform);
+            foreach (var system in _attackHitbox.GetComponentsInChildren<ParticleSystem>())
+            {
+                var main = system.main;
+                main.simulationSpeed = AttackAnimationSpeed;
+            }
             if (!_watchingRight) // rotate hitbox to the left
             {
                 _attackHitbox.transform.Rotate(0, -180, 0);
