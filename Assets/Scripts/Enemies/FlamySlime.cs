@@ -21,7 +21,7 @@ namespace Enemies
             yield return new WaitUntil(() => BehaviorEnabled);
             while (isActiveAndEnabled)
             {
-                Utility.Effects.PlayEffectForSeconds(fireEffect, fireLifetime, this);
+                Utility.Effects.PlayEffectForSeconds(fireEffect, fireLifetime, transform);
                 yield return new WaitForSeconds(fireCooldown);
             }
         }

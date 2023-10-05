@@ -12,14 +12,20 @@ namespace Utility
             _instance = this;
         }
 
-        public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, MonoBehaviour parent, bool isAttached = false)
+        public static void StopEffect(ParticleSystem system)
         {
-            _instance.StartCoroutine(PlayAndDestroy(effect, parent.transform, isAttached, seconds));
+            system.Stop();
+            _instance.StartCoroutine(DestroyEffect(system));
         }
 
-        public static void PlayEffectOnce(ParticleSystem effect, MonoBehaviour parent, bool isAttached = false)
+        public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, Transform parent, bool isAttached = false)
         {
-            _instance.StartCoroutine(PlayAndDestroy(effect, parent.transform, isAttached));
+            _instance.StartCoroutine(PlayAndDestroy(effect, parent, isAttached, seconds));
+        }
+
+        public static void PlayEffectOnce(ParticleSystem effect, Transform parent, bool isAttached = false)
+        {
+            _instance.StartCoroutine(PlayAndDestroy(effect, parent, isAttached));
         }
 
         private static IEnumerator PlayAndDestroy(ParticleSystem effect, Transform parent, bool isAttached, float? seconds = null)
@@ -33,6 +39,12 @@ namespace Utility
                 yield return new WaitForSeconds((float) seconds);
                 system.Stop();
             }
+
+            _instance.StartCoroutine(DestroyEffect(system));
+        }
+
+        private static IEnumerator DestroyEffect(ParticleSystem system)
+        {
             yield return new WaitWhile(system.IsAlive);
             Destroy(system.gameObject);
         }

@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Player;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
+using Utility;
 
 [RequireComponent(
     typeof(Animator), 
@@ -34,12 +38,17 @@ public abstract class LiveEntity : MonoBehaviour
     [SerializeField] private float fireResistance; // by default, fire makes 1 damage in 1 second; resistance increase this time
     [SerializeField] private float iceResistance; // by default, ice bar becomes full in 1 second; resistance increase this time
 
+    private ParticleSystem _frozenEffect;
+    private AddressableSingleHandler<ParticleSystem> _frozenEffectHandler;
+
     protected virtual void Start()
     {
         Health = maxHealth;
         Animator = gameObject.GetComponent<Animator>();
         Rigidbody = gameObject.GetComponent<Rigidbody>();
         Collider = gameObject.GetComponent<Collider>();
+
+        _frozenEffectHandler = new AddressableSingleHandler<ParticleSystem>(this, "Frozen");
     }
 
     public virtual void StartAttack(AttackCollider attackCollider) {}
@@ -90,6 +99,16 @@ public abstract class LiveEntity : MonoBehaviour
             <= 0f when _isFrozen => false,
             _ => _isFrozen
         };
+
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (!_frozenEffectHandler.HasInstance && _isFrozen) // add frozen effect
+        {
+            _frozenEffectHandler.Instantiate();
+        }
+        else if (_frozenEffectHandler.HasInstance && !_isFrozen) // remove frozen effect
+        {
+            Effects.StopEffect(_frozenEffectHandler.PopInstance());
+        }
     }
 
     private void OnTriggerExit(Collider other)
