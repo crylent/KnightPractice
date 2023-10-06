@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7104374986759596917}
   - component: {fileID: 7104374986759596918}
   m_Layer: 0
-  m_Name: IceBlow
+  m_Name: VFX_IceBlow
   m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

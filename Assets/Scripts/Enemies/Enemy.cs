@@ -32,26 +32,12 @@ namespace Enemies
             Animator.SetTrigger(triggerId);
         }
 
-        public override void MakeDamage(string attackName, AttackCollider attackCollider)
+        protected override void MakeDamageOnTarget(AttackCollider hitbox)
         {
-            if (attackCollider.IsUnityNull() || !IsAlive) return;
-            StartCoroutine(MakeDamageCoroutine(attackCollider));
-        }
-
-        private IEnumerator MakeDamageCoroutine(AttackCollider attackCollider)
-        {
-            var hitbox = Instantiate(attackCollider, gameObject.transform);
-            hitbox.transform.parent = null; // detach from parent to ignore other attack colliders
-            yield return new WaitForFixedUpdate(); // wait for OnTriggerEnter execution
             if (hitbox.PlayerIsInside)
             {
                 PlayerComponents.Controller.TakeDamage(this, hitbox.Damage);
             }
-
-            var childSystem = hitbox.GetComponentInChildren<ParticleSystem>();
-            if (!childSystem.IsUnityNull()) // if has child particle system, delay destroying
-                yield return new WaitWhile(() => childSystem.IsAlive());
-            Destroy(hitbox.gameObject);
         }
 
         private Vector3 _posDiff; // relative player's position

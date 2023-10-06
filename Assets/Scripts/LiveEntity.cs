@@ -54,11 +54,30 @@ public abstract class LiveEntity : MonoBehaviour
     }
 
     public virtual void StartAttack(string attackName, [CanBeNull] AttackCollider attackCollider, [CanBeNull] ParticleSystem attackEffect) {}
-    public abstract void MakeDamage(string attackName, [CanBeNull] AttackCollider attackCollider);
+
+    public virtual void MakeDamage(string attackName, [CanBeNull] AttackCollider attackCollider)
+    {
+        if (attackCollider.IsUnityNull() || !IsAlive) return;
+        StartCoroutine(MakeDamageCoroutine(attackCollider));
+    }
     public virtual void AfterAttack()
     {
         IsAttacking = false;
     }
+
+    private IEnumerator MakeDamageCoroutine(AttackCollider attackCollider)
+    {
+        var hitbox = Instantiate(attackCollider, gameObject.transform);
+        hitbox.transform.parent = null; // detach from parent to ignore other attack colliders
+        yield return new WaitForFixedUpdate(); // wait for OnTriggerEnter execution
+        MakeDamageOnTarget(hitbox);
+        var childSystem = hitbox.GetComponentInChildren<ParticleSystem>();
+        if (!childSystem.IsUnityNull()) // if has child particle system, delay destroying
+            yield return new WaitWhile(() => childSystem.IsAlive());
+        Destroy(hitbox.gameObject);
+    }
+
+    protected abstract void MakeDamageOnTarget(AttackCollider hitbox);
 
     public virtual void TakeDamage(LiveEntity producer = null, int damage = 1)
     {

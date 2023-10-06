@@ -15,41 +15,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2837558421060834693, guid: 9262319ee22607a42b947e2da54f9465,
-        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -91,7 +56,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4010756241515384294, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
       insertIndex: 5
-      addedObject: {fileID: 6181020555903539429}
+      addedObject: {fileID: 7284778459219104375}
   m_SourcePrefab: {fileID: 100100000, guid: 9262319ee22607a42b947e2da54f9465, type: 3}
 --- !u!1 &6669011539854936214 stripped
 GameObject:
@@ -99,7 +64,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7720303512893801840}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6181020555903539429
+--- !u!114 &7284778459219104375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +73,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6669011539854936214}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c27038279959214f9cf3913955c22b4, type: 3}
+  m_Script: {fileID: 11500000, guid: 43c0cb6dbcb142c2b5c0f8f8de5d3894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
@@ -125,3 +90,9 @@ MonoBehaviour:
     type: 3}
   fireCooldown: 1.5
   fireLifetime: 15
+  iceAreaEffect: {fileID: 7104374986759596917, guid: bd9e0d8655015654c8d2f1ec224921ed,
+    type: 3}
+  iceBlowRange: 30
+  iceAreaDistanceToCenter: 30
+  iceAreaLifetime: 15
+  iceBlowCooldown: 10

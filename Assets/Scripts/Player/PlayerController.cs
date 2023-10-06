@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Utility;
 
 namespace Player
 {
@@ -146,28 +147,21 @@ namespace Player
         public override void StartAttack(string attackName,
             AttackCollider attackCollider, ParticleSystem attackEffect)
         {
-            _attackHitbox = Instantiate(attackCollider, transform);
-            foreach (var system in _attackHitbox.GetComponentsInChildren<ParticleSystem>())
+            if (attackEffect.IsUnityNull()) return;
+            foreach (var system in attackEffect!.GetComponentsInChildren<ParticleSystem>())
             {
                 var main = system.main;
                 main.simulationSpeed = AttackAnimationSpeed;
             }
-            if (!IsWatchingRight) // rotate hitbox to the left
-            {
-                _attackHitbox.transform.Rotate(0, -180, 0);
-            }
-            _attackHitbox.transform.parent = null; // detach from parent to ignore other attack colliders
-            _enemiesBeingAttacked = _attackHitbox.GetComponent<AttackCollider>().Enemies;
+            Effects.PlayEffectOnce(attackEffect, transform, true);
         }
 
-        public override void MakeDamage(string attackName, AttackCollider attackCollider)
+        protected override void MakeDamageOnTarget(AttackCollider hitbox)
         {
-            foreach (var other in _enemiesBeingAttacked)
+            foreach (var other in hitbox.Enemies)
             {
                 other.TakeDamage(this);
             }
-
-            Destroy(_attackHitbox.gameObject);
         }
 
         public override void AfterAttack()

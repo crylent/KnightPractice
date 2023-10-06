@@ -411,7 +411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f550f7fa7d4fc1d428d8341e5a0f34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCollider: {fileID: -5446033052832921025, guid: 4099db21b0989bb4c9249776f74a54d7,
+  attackName: 
+  attackCollider: {fileID: -5446033052832921025, guid: 3dbc04fa5022dcc428d8a93163a86c50,
+    type: 3}
+  attackEffect: {fileID: 6721351065550021183, guid: 73e042663980d15419ed78777abf6ddc,
     type: 3}
 --- !u!1101 &-5592379017912814332
 AnimatorStateTransition:
@@ -800,55 +803,55 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: onHit
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isBlocking
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isWatchingRight
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isRunning
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: shieldDamage
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: runAnimSpeed
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: goToSecondAttack
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: attackAnimSpeed
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -965,7 +968,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f550f7fa7d4fc1d428d8341e5a0f34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCollider: {fileID: -5446033052832921025, guid: fb77f9a8432593044903df227fbfe734,
+  attackName: 
+  attackCollider: {fileID: -5446033052832921025, guid: 3dbc04fa5022dcc428d8a93163a86c50,
+    type: 3}
+  attackEffect: {fileID: 2767575657988147597, guid: 3c95bc6e2510e9740a54cb22883ed501,
     type: 3}
 --- !u!1101 &796490759629838199
 AnimatorStateTransition:
@@ -1051,7 +1057,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f550f7fa7d4fc1d428d8341e5a0f34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCollider: {fileID: -5446033052832921025, guid: 4099db21b0989bb4c9249776f74a54d7,
+  attackName: 
+  attackCollider: {fileID: -5446033052832921025, guid: fb77f9a8432593044903df227fbfe734,
+    type: 3}
+  attackEffect: {fileID: 6721351065550021183, guid: 2f09d3b45d0845448abc80ab6610daa0,
     type: 3}
 --- !u!1101 &1739813612760266319
 AnimatorStateTransition:
@@ -1418,7 +1427,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f550f7fa7d4fc1d428d8341e5a0f34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackName: 
   attackCollider: {fileID: -5446033052832921025, guid: fb77f9a8432593044903df227fbfe734,
+    type: 3}
+  attackEffect: {fileID: 2767575657988147597, guid: 6e427d41f8e9e2341948fe244b6525d7,
     type: 3}
 --- !u!1102 &5636255257624129112
 AnimatorState:
