@@ -17,6 +17,13 @@ namespace Utility
             system.Stop();
             _instance.StartCoroutine(DestroyEffect(system));
         }
+        
+        public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, Vector3 position)
+        {
+            var transform = new GameObject().transform;
+            transform.position = position;
+            _instance.StartCoroutine(PlayAndDestroy(effect, transform, false, seconds));
+        }
 
         public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, Transform parent, bool isAttached = false)
         {

@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class AttackCollider : MonoBehaviour
 {
-    [SerializeField] private string attackName;
-    public string AttackName => attackName;
-    
     [SerializeField] private int damage = 1;
     public int Damage => damage;
     

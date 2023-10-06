@@ -5454,7 +5454,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &840758166 stripped
 Transform:
@@ -10029,7 +10029,7 @@ PrefabInstance:
     - target: {fileID: -7552582706839291426, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
@@ -10947,15 +10947,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6181020555903539429, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6669011539854936214, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368,
         type: 3}
       propertyPath: m_Name
       value: Ice Slime
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6181020555903539429, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6669011539854936214, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368,
+        type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 1869290467}
   m_SourcePrefab: {fileID: 100100000, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368, type: 3}
 --- !u!1 &1767283802
 GameObject:
@@ -11470,6 +11480,44 @@ Transform:
   m_Father: {fileID: 706617746}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1869290459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6669011539854936214, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368,
+    type: 3}
+  m_PrefabInstance: {fileID: 1762713447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1869290467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869290459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c0cb6dbcb142c2b5c0f8f8de5d3894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  maxHealth: 3
+  fireResistance: 0
+  iceResistance: 1
+  threatArrow: {fileID: 3391677093500002457, guid: 3a69bdf33e01d62409f9176a509f9d0d,
+    type: 3}
+  attackRange: 13
+  spurtRange: 25
+  spurtCooldown: 5
+  freezeTimeAfterSpurt: 1
+  fireEffect: {fileID: 7104374986759596917, guid: 3787470635cedf749963f7b8730e9e6f,
+    type: 3}
+  fireCooldown: 1.5
+  fireLifetime: 15
+  iceAreaEffect: {fileID: 7104374986759596917, guid: bd9e0d8655015654c8d2f1ec224921ed,
+    type: 3}
+  iceBlowRange: 30
+  iceAreaDistanceToCenter: 30
+  iceAreaLifetime: 15
+  iceBlowCooldown: 10
 --- !u!4 &1874225077 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 942762337184432749, guid: b9c7a183a7a2e004cb24435cb080a708,

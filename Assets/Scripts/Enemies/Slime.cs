@@ -15,15 +15,16 @@ namespace Enemies
         [SerializeField] private float spurtCooldown = 5f;
         [SerializeField] private float freezeTimeAfterSpurt = 1f;
 
-        private readonly ActionCooldown _allBehaviorCooldown;
-        private readonly ActionCooldown _spurtCooldown;
+        private ActionCooldown _allBehaviorCooldown;
+        private ActionCooldown _spurtCooldown;
         [CanBeNull] private GameObject _spurtArrow;
         
         private static readonly int XMovement = Animator.StringToHash("x-movement");
         private static readonly int SpurtTrigger = Animator.StringToHash("onSpurt");
 
-        public Slime()
+        protected override void Start()
         {
+            base.Start();
             _spurtCooldown = new ActionCooldown(this, spurtCooldown);
             _allBehaviorCooldown = new ActionCooldown(this, freezeTimeAfterSpurt);
         }
@@ -37,12 +38,20 @@ namespace Enemies
         {
             if (!_allBehaviorCooldown.CanPerform) return;
             Movement = GetDirectionToPlayer() * Speed; // chase player
-            Animator.SetInteger(XMovement, Math.Sign(Movement.x));
+            var moveDirection = Math.Sign(Movement.x);
+            IsWatchingRight = moveDirection switch
+            {
+                -1 => false,
+                1 => true,
+                _ => IsWatchingRight
+            };
+            Animator.SetInteger(XMovement, moveDirection);
             AttackBehavior();
         }
 
         protected virtual void AttackBehavior()
         {
+            if (IsAttacking) return;
             var distance = GetDistanceToPlayer();
             if (distance < spurtRange && _spurtCooldown.CanPerform)
             {
@@ -59,10 +68,11 @@ namespace Enemies
             }
         }
 
-        public override void StartAttack(AttackCollider attackCollider)
+        public override void StartAttack(string attackName, 
+            AttackCollider attackCollider, ParticleSystem attackEffect)
         {
             if (!IsAlive) return;
-            if (attackCollider.AttackName != "Spurt") return;
+            if (attackName != "Spurt") return;
             _spurtArrow = null;
             StartCoroutine(Spurt());
         }

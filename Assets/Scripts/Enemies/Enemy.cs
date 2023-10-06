@@ -32,8 +32,9 @@ namespace Enemies
             Animator.SetTrigger(triggerId);
         }
 
-        public override void MakeDamage(AttackCollider attackCollider)
+        public override void MakeDamage(string attackName, AttackCollider attackCollider)
         {
+            if (attackCollider.IsUnityNull() || !IsAlive) return;
             StartCoroutine(MakeDamageCoroutine(attackCollider));
         }
 

@@ -20,6 +20,8 @@ public abstract class LiveEntity : MonoBehaviour
     [SerializeField] private float speed = 50f;
     protected float Speed => !IsFrozen ? speed : speed * 0.5f; // slower when frozen
     
+    protected bool IsWatchingRight;
+    
     [FormerlySerializedAs("health")] [SerializeField] private int maxHealth;
     public int MaxHealth => maxHealth;
 
@@ -51,8 +53,8 @@ public abstract class LiveEntity : MonoBehaviour
         _frozenEffectHandler = new AddressableSingleHandler<ParticleSystem>(this, "Frozen");
     }
 
-    public virtual void StartAttack(AttackCollider attackCollider) {}
-    public abstract void MakeDamage(AttackCollider attackCollider);
+    public virtual void StartAttack(string attackName, [CanBeNull] AttackCollider attackCollider, [CanBeNull] ParticleSystem attackEffect) {}
+    public abstract void MakeDamage(string attackName, [CanBeNull] AttackCollider attackCollider);
     public virtual void AfterAttack()
     {
         IsAttacking = false;

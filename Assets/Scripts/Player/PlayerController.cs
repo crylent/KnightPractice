@@ -12,7 +12,6 @@ namespace Player
     public class PlayerController : LiveEntity
     {
         private Vector3 _deltaMove;
-        private bool _watchingRight;
         
         [SerializeField] private float dodgeSpeed = 200f;
         [SerializeField] private float dodgeTime = 0.15f;
@@ -80,8 +79,8 @@ namespace Player
             // update animation
             var deltaX = Math.Sign(_deltaMove.x);
             var deltaZ = Math.Sign(_deltaMove.z);
-            _watchingRight = deltaX > 0 || (deltaX == 0 && (deltaZ > 0 || (deltaZ == 0 && _watchingRight)));
-            Animator.SetBool(IsWatchingRightBool, _watchingRight);
+            IsWatchingRight = deltaX > 0 || (deltaX == 0 && (deltaZ > 0 || (deltaZ == 0 && IsWatchingRight)));
+            Animator.SetBool(IsWatchingRightBool, IsWatchingRight);
             Animator.SetBool(IsRunningBool, deltaX != 0 || deltaZ != 0);
             Animator.SetFloat(RunAnimSpeed, (_isBlocking ? 0.5f : 1f) * (IsFrozen ? 0.75f : 1f));
         }
@@ -144,7 +143,8 @@ namespace Player
             _isDodging = false;
         }
 
-        public override void StartAttack(AttackCollider attackCollider)
+        public override void StartAttack(string attackName,
+            AttackCollider attackCollider, ParticleSystem attackEffect)
         {
             _attackHitbox = Instantiate(attackCollider, transform);
             foreach (var system in _attackHitbox.GetComponentsInChildren<ParticleSystem>())
@@ -152,7 +152,7 @@ namespace Player
                 var main = system.main;
                 main.simulationSpeed = AttackAnimationSpeed;
             }
-            if (!_watchingRight) // rotate hitbox to the left
+            if (!IsWatchingRight) // rotate hitbox to the left
             {
                 _attackHitbox.transform.Rotate(0, -180, 0);
             }
@@ -160,7 +160,7 @@ namespace Player
             _enemiesBeingAttacked = _attackHitbox.GetComponent<AttackCollider>().Enemies;
         }
 
-        public override void MakeDamage(AttackCollider attackCollider)
+        public override void MakeDamage(string attackName, AttackCollider attackCollider)
         {
             foreach (var other in _enemiesBeingAttacked)
             {
@@ -182,8 +182,8 @@ namespace Player
         public override void TakeDamage(LiveEntity producer = null, int damage = 1)
         {
             if (_isBlocking && !producer.IsUnityNull() && 
-                (_watchingRight && producer!.transform.position.x > transform.position.x ||
-                !_watchingRight && producer!.transform.position.x < transform.position.x)
+                (IsWatchingRight && producer!.transform.position.x > transform.position.x ||
+                !IsWatchingRight && producer!.transform.position.x < transform.position.x)
                ) // can't block damage from environment or backstabs
             {
                 StartCoroutine(DamageShield(damage));

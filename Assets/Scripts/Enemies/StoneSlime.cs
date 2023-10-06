@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace Enemies
@@ -8,7 +7,6 @@ namespace Enemies
         [SerializeField] private float jumpAttackRange = 20f;
         [SerializeField] private float jumpAttackCooldown = 5f;
 
-        //private bool _canPerformJumpAttack = true;
         private readonly ActionCooldown _jumpAttackCooldown;
             
         private static readonly int JumpAttackTrigger = Animator.StringToHash("onJump");
@@ -32,9 +30,9 @@ namespace Enemies
             }
         }
 
-        public override void MakeDamage(AttackCollider attackCollider)
+        public override void MakeDamage(string attackName, AttackCollider attackCollider)
         {
-            base.MakeDamage(attackCollider);
+            base.MakeDamage(attackName, attackCollider);
             Collider.enabled = true;
         }
     }
