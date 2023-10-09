@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Utility
@@ -52,6 +53,9 @@ namespace Utility
 
         private static IEnumerator DestroyEffect(ParticleSystem system)
         {
+            var collider = system.GetComponent<Collider>();
+            if (!collider.IsUnityNull()) collider.enabled = false; // effect can no more affect player or enemies
+            
             yield return new WaitWhile(system.IsAlive);
             Destroy(system.gameObject);
         }
