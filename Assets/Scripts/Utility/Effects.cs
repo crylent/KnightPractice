@@ -45,6 +45,7 @@ namespace Utility
             if (seconds != null)
             {
                 yield return new WaitForSeconds((float) seconds);
+                if (system.IsDestroyed()) yield break;
                 system.Stop();
             }
 
@@ -56,7 +57,8 @@ namespace Utility
             var collider = system.GetComponent<Collider>();
             if (!collider.IsUnityNull()) collider.enabled = false; // effect can no more affect player or enemies
             
-            yield return new WaitWhile(system.IsAlive);
+            yield return new WaitWhile(() => !system.IsDestroyed() && system.IsAlive());
+            if (system.IsDestroyed()) yield break;
             Destroy(system.gameObject);
         }
     }

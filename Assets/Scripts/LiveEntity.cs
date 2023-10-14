@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Player;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 using Utility;
 
@@ -15,7 +12,7 @@ using Utility;
     typeof(Rigidbody), 
     typeof(Collider)
     )]
-public abstract class LiveEntity : MonoBehaviour
+public abstract class LiveEntity : GameEntity
 {
     [SerializeField] private float speed = 50f;
     protected float Speed => !IsFrozen ? speed : speed * 0.5f; // slower when frozen
@@ -81,7 +78,7 @@ public abstract class LiveEntity : MonoBehaviour
 
     public virtual void TakeDamage(LiveEntity producer = null, int damage = 1)
     {
-        Health -= damage;
+        Health = Math.Max(Health - damage, 0);
         Animator.SetTrigger(IsAlive ? HitTrigger : DeathTrigger);
     }
     

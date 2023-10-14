@@ -9,6 +9,8 @@ TagManager:
   - Sword
   - Fire
   - Ice
+  - HUD
+  - MainMenu
   layers:
   - Default
   - TransparentFX

@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 7227184538375636105}
   - component: {fileID: 257992825333024354}
   - component: {fileID: 9030465897247084669}
+  - component: {fileID: 1086395954667284291}
   m_Layer: 0
   m_Name: VFX_Fire
   m_TagString: Fire
@@ -4992,3 +4993,15 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &1086395954667284291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987572886358014243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde4116158cc4440b7636950b217a665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

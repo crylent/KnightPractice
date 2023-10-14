@@ -34642,6 +34642,7 @@ GameObject:
   - component: {fileID: 7104374986759596918}
   - component: {fileID: 2013302394655094129}
   - component: {fileID: 1937975827780908880}
+  - component: {fileID: 123153670228137916}
   m_Layer: 0
   m_Name: VFX_LargeIceArea
   m_TagString: Ice
@@ -39549,6 +39550,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 1
+--- !u!114 &123153670228137916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7104374986759596919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde4116158cc4440b7636950b217a665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8031796461781411998
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using Enemies;
+using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utility;
 
 public class GameManager : MonoBehaviour
@@ -9,23 +12,63 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Challenge challenge;
     [SerializeField] private Portal portalPrefab;
     [SerializeField] private Rect spawnArea;
+    [SerializeField] private Animator canvas;
+
+    private PlayerInput _playerInput;
 
     private int _currentWave = -1;
     private long _enemiesAlive;
-    
-    // Start is called before the first frame update
+    private bool _gameIsOn;
+    private static readonly int OnGameStartedTrigger = Animator.StringToHash("onGameStarted");
+    private static readonly int OnGameFinishedTrigger = Animator.StringToHash("onGameFinished");
+    private static readonly int OnDeathTrigger = Animator.StringToHash("onDeath");
+
     private void Start()
     {
+        _playerInput = PlayerComponents.Object.GetComponent<PlayerInput>();
+    }
+
+    public void StartGame()
+    {
+        ResetScene();
+        _gameIsOn = true;
+        _playerInput.SwitchCurrentActionMap("gameplay");
+        canvas.SetTrigger(OnGameStartedTrigger);
         StartCoroutine(LaunchChallenge());
+    }
+
+    public void StopGame(bool death)
+    {
+        if (!_gameIsOn) return;
+        _gameIsOn = false;
+        _playerInput.SwitchCurrentActionMap("menu");
+        canvas.SetTrigger(death ? OnDeathTrigger : OnGameFinishedTrigger);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    private static void ResetScene()
+    {
+        PlayerComponents.Controller.ResetPlayer();
+        foreach (var entity in FindObjectsOfType<GameEntity>())
+        {
+            if (entity is not PlayerController) Destroy(entity.gameObject);
+        }
     }
 
     private IEnumerator LaunchChallenge()
     {
+        _currentWave = -1;
         while (_currentWave + 1 < challenge.WavesCount)
         {
-            yield return new WaitWhile(() => _enemiesAlive > 0);
             CallNextWave();
+            yield return new WaitWhile(() => _enemiesAlive > 0 && _gameIsOn);
+            if (!_gameIsOn) yield break;
         }
+        StopGame(false);
     }
 
     private void CallNextWave()

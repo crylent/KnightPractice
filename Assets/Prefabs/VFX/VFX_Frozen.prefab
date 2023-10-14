@@ -29732,6 +29732,7 @@ GameObject:
   - component: {fileID: 7104374986759596916}
   - component: {fileID: 7104374986759596917}
   - component: {fileID: 7104374986759596918}
+  - component: {fileID: -1894015702184495981}
   m_Layer: 0
   m_Name: VFX_Frozen
   m_TagString: Ice
@@ -34603,6 +34604,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-1894015702184495981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7104374986759596919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde4116158cc4440b7636950b217a665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8031796461781411998
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using Enemies;
 using UnityEngine;
 
-public class Portal : MonoBehaviour
+public class Portal : GameEntity
 {
     public Enemy enemyToSpawn;
     

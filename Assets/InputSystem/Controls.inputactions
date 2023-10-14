@@ -2,6 +2,12 @@
     "name": "Controls",
     "maps": [
         {
+            "name": "menu",
+            "id": "881d99bf-5e50-4c27-b59a-6db66e65ddae",
+            "actions": [],
+            "bindings": []
+        },
+        {
             "name": "gameplay",
             "id": "3ff9a1f9-a9c2-4ea3-b4fb-3587ad0d78d8",
             "actions": [

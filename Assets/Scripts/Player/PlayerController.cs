@@ -181,12 +181,13 @@ namespace Player
                ) // can't block damage from environment or backstabs
             {
                 StartCoroutine(DamageShield(damage));
-                Utility.Effects.PlayEffectOnce(blockEffect, transform);
+                Effects.PlayEffectOnce(blockEffect, transform);
             }
             else
             {
                 base.TakeDamage(producer, damage);
                 onHealthChanged.Invoke(Health);
+                if (!IsAlive) FindObjectOfType<GameManager>().StopGame(true);
             }
         }
 
@@ -197,6 +198,7 @@ namespace Player
             if (_shieldStability <= 0) SetBlock(false);
             
             yield return new WaitForSeconds(shieldStabilityRecoverTime);
+            if (_shieldStability >= shieldDefaultStability) yield break;
             _shieldStability += deltaStability; // recover stability later
             ReflectShieldDamage();
         }
@@ -204,6 +206,18 @@ namespace Player
         private void ReflectShieldDamage()
         {
             Animator.SetInteger(ShieldDamageInt, shieldDefaultStability - _shieldStability);
+        }
+
+        public void ResetPlayer()
+        {
+            Health = MaxHealth;
+            _mana = MaxMana;
+            Freeze = 0;
+            _shieldStability = shieldDefaultStability;
+            ReflectShieldDamage();
+            onHealthChanged.Invoke(Health);
+            onFreezeChanged.Invoke(Freeze);
+            transform.position = Vector3.zero;
         }
     }
 }

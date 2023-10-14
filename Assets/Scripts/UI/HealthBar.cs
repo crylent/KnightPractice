@@ -33,12 +33,21 @@ namespace UI
 
         public void OnHealthChanged(int health)
         {
-            var deltaSign = Math.Sign(health - _lastHealth);
-            for (var i = _lastHealth - 1; i != health + deltaSign && i >= 0 && i < MaxHealth; i += deltaSign)
+            for (var i = _lastHealth; i > health; i--)
             {
-                _lives[i].GetComponent<Animator>().SetBool(IsWastedBoolean,deltaSign < 0);
+                AnimateHealth(i - 1, true);
+            }
+
+            for (var i = _lastHealth; i < health; i++)
+            {
+                AnimateHealth(i, false);
             }
             _lastHealth = health;
+        }
+
+        private void AnimateHealth(int i, bool isWasted)
+        {
+            _lives[i].GetComponent<Animator>().SetBool(IsWastedBoolean, isWasted);
         }
     }
 }
