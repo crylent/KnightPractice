@@ -11610,7 +11610,7 @@ MonoBehaviour:
   blockEffect: {fileID: 1289151679004632776, guid: 244545ca7bc6b9740aa3bedf5890aa6b,
     type: 3}
   maxMana: 100
-  manaRecovery: 1
+  manaRecovery: 0.1
   onHealthChanged:
     m_PersistentCalls:
       m_Calls:

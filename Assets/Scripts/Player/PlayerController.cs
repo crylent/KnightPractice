@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Utility;
+using VFX;
 
 namespace Player
 {
@@ -133,7 +134,7 @@ namespace Player
             _isDodging = true;
             
             yield return new WaitWhile(() => IsAttacking); // can't dodge while attacking, but will do it after finishing
-            Utility.Effects.PlayEffectOnce(dodgeEffect, transform);
+            Effects.PlayEffectOnce(dodgeEffect, transform);
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
             
             // consume mana
@@ -218,6 +219,14 @@ namespace Player
             onHealthChanged.Invoke(Health);
             onFreezeChanged.Invoke(Freeze);
             transform.position = Vector3.zero;
+        }
+
+        private void OnTriggerEnter(Collider col)
+        {
+            if (!col.TryGetComponent<ManaParticle>(out var manaParticle)) return;
+            _mana += manaParticle.manaValue;
+            onManaChanged.Invoke(_mana);
+            Destroy(col.gameObject);
         }
     }
 }

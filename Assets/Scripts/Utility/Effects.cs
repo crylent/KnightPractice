@@ -61,5 +61,16 @@ namespace Utility
             if (system.IsDestroyed()) yield break;
             Destroy(system.gameObject);
         }
+
+        public static void DestroyOnStopped(ParticleSystem system)
+        {
+            _instance.StartCoroutine(DestroyOnStoppedCoroutine(system));
+        }
+
+        private static IEnumerator DestroyOnStoppedCoroutine(ParticleSystem system)
+        {
+            yield return new WaitWhile(system.IsAlive);
+            Destroy(system);
+        }
     }
 }

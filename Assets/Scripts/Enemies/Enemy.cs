@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using Player;
-using Unity.VisualScripting;
 using UnityEngine;
+using Utility;
+using VFX;
 
 namespace Enemies
 {
@@ -13,6 +14,17 @@ namespace Enemies
         protected Vector3 Movement = Vector3.zero;
 
         [NonSerialized] public bool BehaviorEnabled;
+
+        private static AddressableStaticHandler<ManaParticle> _manaParticlesHandler;
+
+        protected override void Start()
+        {
+            base.Start();
+            if (_manaParticlesHandler == null!)
+            {
+                _manaParticlesHandler = new AddressableStaticHandler<ManaParticle>("ManaParticle");
+            }
+        }
 
         protected override void Update()
         {
@@ -61,6 +73,8 @@ namespace Enemies
         public override void TakeDamage(LiveEntity producer = null, int damage = 1)
         {
             base.TakeDamage(producer, damage);
+            _manaParticlesHandler.Instantiate(transform);
+            //Instantiate(onHitManaParticle, transform.position, Quaternion.identity);
             if (!IsAlive) BehaviorEnabled = false; // no more attacks from the grave
         }
         
