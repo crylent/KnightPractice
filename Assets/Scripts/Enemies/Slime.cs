@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
 using JetBrains.Annotations;
-using Sprites;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(ColorMultiplier))]
     public class Slime : Enemy
     {
         [SerializeField] private float attackRange = 13f;
@@ -15,7 +13,6 @@ namespace Enemies
         [SerializeField] private float spurtCooldown = 5f;
         [SerializeField] private float freezeTimeAfterSpurt = 1f;
 
-        private ActionCooldown _allBehaviorCooldown;
         private ActionCooldown _spurtCooldown;
         [CanBeNull] private GameObject _spurtArrow;
         
@@ -26,7 +23,7 @@ namespace Enemies
         {
             base.Start();
             _spurtCooldown = new ActionCooldown(this, spurtCooldown);
-            _allBehaviorCooldown = new ActionCooldown(this, freezeTimeAfterSpurt);
+            AllBehaviorCooldown = new ActionCooldown(this, freezeTimeAfterSpurt);
         }
 
         private void LateUpdate()
@@ -36,7 +33,7 @@ namespace Enemies
 
         protected override void BehaviorUpdate()
         {
-            if (!_allBehaviorCooldown.CanPerform) return;
+            if (!AllBehaviorCooldown.CanPerform) return;
             Movement = GetDirectionToPlayer() * Speed; // chase player
             var moveDirection = Math.Sign(Movement.x);
             IsWatchingRight = moveDirection switch
@@ -84,7 +81,7 @@ namespace Enemies
             var spurtSpeed = (Math.Min(GetDistanceToPlayer(), spurtRange) - 5f) / spurtTime;
             Rigidbody.velocity = Vector3.zero;
             Animator.SetInteger(XMovement, 0);
-            _allBehaviorCooldown.Cooldown();
+            AllBehaviorCooldown.Cooldown();
             while (IsAttacking)
             {
                 transform.position +=  spurtSpeed * Time.fixedDeltaTime * direction;
@@ -94,7 +91,7 @@ namespace Enemies
 
         private void FixedUpdate()
         {
-            if (BehaviorEnabled && !IsAttacking && _allBehaviorCooldown.CanPerform &&
+            if (BehaviorEnabled && !IsAttacking && AllBehaviorCooldown.CanPerform &&
                 Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1f > 0.5f)
             {
                 Rigidbody.velocity = Movement;

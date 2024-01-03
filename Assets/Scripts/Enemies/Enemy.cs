@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using Player;
+using Sprites;
 using UnityEngine;
 using Utility;
 using VFX;
 
 namespace Enemies
 {
+    [RequireComponent(typeof(ColorMultiplier))]
     public abstract class Enemy : LiveEntity
     {
         [SerializeField] protected GameObject threatArrow;
@@ -14,6 +16,7 @@ namespace Enemies
         protected Vector3 Movement = Vector3.zero;
 
         [NonSerialized] public bool BehaviorEnabled;
+        protected ActionCooldown AllBehaviorCooldown;
 
         private static AddressableStaticHandler<ManaParticle> _manaParticlesHandler;
 
