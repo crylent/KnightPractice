@@ -77,7 +77,6 @@ namespace Enemies
         {
             base.TakeDamage(producer, damage);
             _manaParticlesHandler.Instantiate(transform);
-            //Instantiate(onHitManaParticle, transform.position, Quaternion.identity);
             if (!IsAlive) BehaviorEnabled = false; // no more attacks from the grave
         }
         
@@ -87,11 +86,13 @@ namespace Enemies
             public bool CanPerform => !_onCooldown;
             private readonly MonoBehaviour _owner;
             private readonly float _cooldownTime;
+            private int _count;
 
-            public ActionCooldown(MonoBehaviour owner, float cooldownTime)
+            public ActionCooldown(MonoBehaviour owner, float cooldownTime, bool start = false)
             {
                 _owner = owner;
                 _cooldownTime = cooldownTime;
+                if (start) Cooldown();
             }
 
             public void Cooldown()
@@ -102,8 +103,10 @@ namespace Enemies
             private IEnumerator CooldownCoroutine()
             {
                 _onCooldown = true;
+                _count++;
                 yield return new WaitForSeconds(_cooldownTime);
-                _onCooldown = false;
+                _count--;
+                if (_count == 0) _onCooldown = false;
             }
         }
     }
