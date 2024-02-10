@@ -47,4 +47,4 @@ MonoBehaviour:
   waves:
   - enemies:
     - {fileID: 8483856241799928862, guid: 52632b5dadef26f499b14be2096dd60e, type: 3}
-    - {fileID: 3833951613051847629, guid: 6ff22c929fa7df445b94532f6062dc10, type: 3}
+    - {fileID: 745415327048968782, guid: 6ff22c929fa7df445b94532f6062dc10, type: 3}

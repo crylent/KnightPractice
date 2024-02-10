@@ -88,8 +88,48 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dark Ghost
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8483856241799928862, guid: 52632b5dadef26f499b14be2096dd60e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8483856241799928862, guid: 52632b5dadef26f499b14be2096dd60e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8234280167285279867, guid: 52632b5dadef26f499b14be2096dd60e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 745415327048968782}
   m_SourcePrefab: {fileID: 100100000, guid: 52632b5dadef26f499b14be2096dd60e, type: 3}
+--- !u!1 &3660954599803556776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8234280167285279867, guid: 52632b5dadef26f499b14be2096dd60e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4650064337510784979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &745415327048968782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3660954599803556776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b32aee88e3dad4c90147586f43fc6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 20
+  maxHealth: 3
+  fireResistance: 1
+  iceResistance: 1
+  threatArrow: {fileID: 0}
+  damageCooldown: 1
+  changeDirectionCooldown: 1
+  directionMaxRandom: 30
+  speedupFactor: 2.5
+  speedupCooldown: 8
+  speedupTime: 4
+  darknessEffectTime: 10

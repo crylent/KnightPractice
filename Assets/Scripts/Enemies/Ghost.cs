@@ -18,8 +18,6 @@ namespace Enemies
         private ActionCooldown _changeDirectionCooldown;
         private ActionCooldown _speedupCooldown;
         
-        
-
         private bool _speedup;
         private static readonly int SpeedupBool = Animator.StringToHash("speedup");
 

@@ -47,6 +47,7 @@ namespace Player
         private static readonly int IsBlockingBool = Animator.StringToHash("isBlocking");
         private static readonly int ShieldDamageInt = Animator.StringToHash("shieldDamage");
         private static readonly int GoToSecondAttackBool = Animator.StringToHash("goToSecondAttack");
+        private static readonly int HasDarknessEffectBool = Animator.StringToHash("hasDarknessEffect");
 
         // Start is called before the first frame update
         protected override void Start()
@@ -187,9 +188,24 @@ namespace Player
             else
             {
                 base.TakeDamage(producer, damage);
+                if (producer is DarkGhost darkGhost)
+                {
+                    StartCoroutine(CastDarknessEffect(darkGhost.darknessEffectTime));
+                }
                 onHealthChanged.Invoke(Health);
                 if (!IsAlive) FindObjectOfType<GameManager>().StopGame(true);
             }
+        }
+
+        private int _darknessEffectCounter;
+        
+        private IEnumerator CastDarknessEffect(float time)
+        {
+            Animator.SetBool(HasDarknessEffectBool, true);
+            _darknessEffectCounter++;
+            yield return new WaitForSeconds(time);
+            _darknessEffectCounter--;
+            if (_darknessEffectCounter == 0) Animator.SetBool(HasDarknessEffectBool, false);
         }
 
         private IEnumerator DamageShield(int deltaStability)
