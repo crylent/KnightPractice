@@ -12984,8 +12984,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae287ab9631e3c469b1dd34e4334f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  challenge: {fileID: 287296451442760234, guid: 371ab9d02b25f0a4899d8fe13b5711ad,
-    type: 3}
+  wavesCount: 5
+  initialComplexity: 15
+  complexityMultiplier: 1.5
+  enemies:
+  - {fileID: 4266252655198641821, guid: 5432eaca15babb749b0fcc9b5ce3a8c5, type: 3}
+  - {fileID: 3426487409735973845, guid: 8f8818cceeeddf2418de4cf41c5747a6, type: 3}
+  - {fileID: 7444129685955584847, guid: a13d6e3c42d858547949f5666a10366b, type: 3}
+  - {fileID: 4283561239310538845, guid: c92942ff42c6a6c42a9386298437db67, type: 3}
+  - {fileID: 6532112578982192869, guid: 9b74cad4501081a4284473259c43bfca, type: 3}
+  - {fileID: 5275636179968981528, guid: 7917965a7fcb72e4d82bb25a10342bce, type: 3}
+  - {fileID: 7284778459219104375, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368, type: 3}
+  - {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465, type: 3}
+  - {fileID: -7986467806451042802, guid: 98f86b58d6587cb47bd71ded8685de11, type: 3}
+  - {fileID: 8483856241799928862, guid: 52632b5dadef26f499b14be2096dd60e, type: 3}
+  - {fileID: 745415327048968782, guid: 6ff22c929fa7df445b94532f6062dc10, type: 3}
   portalPrefab: {fileID: 6554976979321565883, guid: 21e8c6f7c500ae04796ce75303f640f6,
     type: 3}
   spawnArea:

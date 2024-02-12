@@ -11,6 +11,9 @@ namespace Enemies
     [RequireComponent(typeof(ColorMultiplier))]
     public abstract class Enemy : LiveEntity
     {
+        [SerializeField] private float complexity = 10f;
+        public float Complexity => complexity;
+        
         [SerializeField] protected GameObject threatArrow;
         
         protected Vector3 Movement = Vector3.zero;

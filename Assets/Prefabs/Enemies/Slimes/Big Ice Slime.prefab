@@ -95,6 +95,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7284778459219104375, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368,
         type: 3}
+      propertyPath: complexity
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7284778459219104375, guid: 61b9c61a6ee4cb64aaeb5dc5a8411368,
+        type: 3}
       propertyPath: iceAreaEffect
       value: 
       objectReference: {fileID: 7104374986759596917, guid: d75c58974dc46b249826360d384c3993,

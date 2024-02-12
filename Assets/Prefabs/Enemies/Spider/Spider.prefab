@@ -421,6 +421,7 @@ MonoBehaviour:
   maxHealth: 3
   fireResistance: 0
   iceResistance: 0
+  complexity: 5
   threatArrow: {fileID: 3391677093500002457, guid: 3a69bdf33e01d62409f9176a509f9d0d,
     type: 3}
   jumpCooldown: 1

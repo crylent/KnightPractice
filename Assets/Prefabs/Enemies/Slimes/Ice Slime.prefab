@@ -80,6 +80,7 @@ MonoBehaviour:
   maxHealth: 3
   fireResistance: 0
   iceResistance: 1
+  complexity: 20
   threatArrow: {fileID: 3391677093500002457, guid: 3a69bdf33e01d62409f9176a509f9d0d,
     type: 3}
   attackRange: 13

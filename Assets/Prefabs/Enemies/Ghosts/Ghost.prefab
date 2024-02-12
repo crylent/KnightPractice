@@ -314,6 +314,7 @@ MonoBehaviour:
   maxHealth: 3
   fireResistance: 1
   iceResistance: 1
+  complexity: 20
   threatArrow: {fileID: 0}
   damageCooldown: 1
   changeDirectionCooldown: 1

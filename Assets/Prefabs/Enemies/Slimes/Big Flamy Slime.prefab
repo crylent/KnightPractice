@@ -15,6 +15,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5275636179968981528, guid: 7917965a7fcb72e4d82bb25a10342bce,
         type: 3}
+      propertyPath: complexity
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275636179968981528, guid: 7917965a7fcb72e4d82bb25a10342bce,
+        type: 3}
       propertyPath: attackRange
       value: 22
       objectReference: {fileID: 0}

@@ -100,6 +100,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465,
         type: 3}
+      propertyPath: complexity
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7883224755262813434, guid: 9262319ee22607a42b947e2da54f9465,
+        type: 3}
       propertyPath: attackRange
       value: 22
       objectReference: {fileID: 0}
