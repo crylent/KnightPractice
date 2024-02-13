@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Utility;
 using VFX;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
@@ -33,6 +34,8 @@ namespace Player
         public float MaxMana => maxMana;
         private float _mana;
 
+        [SerializeField] private int criticalDamageFactor = 2;
+
         private AttackCollider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
         
@@ -49,6 +52,26 @@ namespace Player
         private static readonly int GoToSecondAttackBool = Animator.StringToHash("goToSecondAttack");
         private static readonly int HasDarknessEffectBool = Animator.StringToHash("hasDarknessEffect");
 
+        public class PlayerModifiers
+        {
+            public float ShieldStabilityRecoverTime = 1f;
+            public float Speed = 1f;
+            public float ManaRecovery = 1f;
+            public float DodgeManaConsumption = 1f;
+            public bool InvulnerableWhenDodging = false;
+            public float CastManaConsumption = 1f;
+            public float EvasionChance = 0f;
+            public float CriticalHitChance = 0f;
+            public float VampirismChance = 0f;
+        }
+
+        public PlayerModifiers Modifiers { get; private set; } = new();
+
+        private float FinalShieldStabilityRecoverTime => shieldStabilityRecoverTime * Modifiers.ShieldStabilityRecoverTime;
+        private float FinalSpeed => Speed * Modifiers.Speed;
+        private float FinalManaRecovery => manaRecovery * Modifiers.ManaRecovery;
+        private float FinalDodgeManaConsumption => dodgeManaConsumption * Modifiers.DodgeManaConsumption;
+
         // Start is called before the first frame update
         protected override void Start()
         {
@@ -61,7 +84,7 @@ namespace Player
         protected override void Update()
         {
             base.Update();
-            if (!IsFrozen) _mana = Math.Min(_mana + Time.deltaTime * manaRecovery, maxMana); // recover mana
+            if (!IsFrozen) _mana = Math.Min(_mana + Time.deltaTime * FinalManaRecovery, maxMana); // recover mana
             onManaChanged.Invoke(_mana);
             onFreezeChanged.Invoke(Freeze);
         }
@@ -71,7 +94,7 @@ namespace Player
             if (_isDodging) return; // ignore default movement when dodging
             var movement = !IsAttacking ? _deltaMove : Vector3.zero; // stop movement when attacking
             if (_isBlocking) movement *= speedFactorWhenBlocking; // slow down movement when blocking
-            Rigidbody.velocity = Speed * movement;
+            Rigidbody.velocity = FinalSpeed * movement;
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -127,7 +150,7 @@ namespace Player
         public void OnDodge(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
-            if (!_isDodging && _mana >= dodgeManaConsumption) StartCoroutine(Dodge());
+            if (!_isDodging && _mana >= FinalDodgeManaConsumption) StartCoroutine(Dodge());
         }
 
         private IEnumerator Dodge()
@@ -139,7 +162,7 @@ namespace Player
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
             
             // consume mana
-            _mana -= dodgeManaConsumption;
+            _mana -= FinalDodgeManaConsumption;
             onManaChanged.Invoke(_mana);
             
             yield return new WaitForSeconds(dodgeTime);
@@ -162,7 +185,17 @@ namespace Player
         {
             foreach (var other in hitbox.Enemies)
             {
-                other.TakeDamage(this);
+                var damage = 1;
+                if (Modifiers.CriticalHitChance > 0 && Random.Range(0f, 1f) < Modifiers.CriticalHitChance)
+                {
+                    damage *= criticalDamageFactor; // critical hit
+                    // TODO: critical hit sound, vfx?
+                }
+                other.TakeDamage(this, damage);
+                if (!other.IsAlive && Modifiers.VampirismChance > 0 && Random.Range(0f, 1f) < Modifiers.VampirismChance)
+                {
+                    RecoverHealth(1); // vampirism effect
+                }
             }
         }
 
@@ -177,9 +210,16 @@ namespace Player
 
         public override void TakeDamage(LiveEntity producer = null, int damage = 1)
         {
+            if (_isDodging && Modifiers.InvulnerableWhenDodging) return;
+            if (Modifiers.EvasionChance > 0)
+            {
+                var rand = Random.Range(0f, 1f);
+                if (rand < Modifiers.EvasionChance) return;
+                // TODO: evasion sound, vfx?
+            }
             if (_isBlocking && !producer.IsUnityNull() && 
                 (IsWatchingRight && producer!.transform.position.x > transform.position.x ||
-                !IsWatchingRight && producer!.transform.position.x < transform.position.x)
+                 !IsWatchingRight && producer!.transform.position.x < transform.position.x)
                ) // can't block damage from environment or backstabs
             {
                 StartCoroutine(DamageShield(damage));
@@ -195,6 +235,12 @@ namespace Player
                 onHealthChanged.Invoke(Health);
                 if (!IsAlive) FindObjectOfType<GameManager>().StopGame(true);
             }
+        }
+
+        public void RecoverHealth(int hp = 1)
+        {
+            Health = Math.Min(MaxHealth, Health + hp);
+            onHealthChanged.Invoke(Health);
         }
 
         private int _darknessEffectCounter;
@@ -214,7 +260,7 @@ namespace Player
             ReflectShieldDamage();
             if (_shieldStability <= 0) SetBlock(false);
             
-            yield return new WaitForSeconds(shieldStabilityRecoverTime);
+            yield return new WaitForSeconds(FinalShieldStabilityRecoverTime);
             if (_shieldStability >= shieldDefaultStability) yield break;
             _shieldStability += deltaStability; // recover stability later
             ReflectShieldDamage();
@@ -227,6 +273,7 @@ namespace Player
 
         public void ResetPlayer()
         {
+            Modifiers = new PlayerModifiers(); // reset effects
             Health = MaxHealth;
             _mana = MaxMana;
             Freeze = 0;
@@ -237,10 +284,11 @@ namespace Player
             transform.position = Vector3.zero;
         }
 
+        // consume mana particles
         private void OnTriggerEnter(Collider col)
         {
             if (!col.TryGetComponent<ManaParticle>(out var manaParticle)) return;
-            _mana += manaParticle.manaValue;
+            _mana += manaParticle.manaValue * Modifiers.ManaRecovery;
             onManaChanged.Invoke(_mana);
             Destroy(col.gameObject);
         }

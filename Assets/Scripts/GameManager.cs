@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enemies;
 using Player;
+using PowerUps;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,6 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Portal portalPrefab;
     [SerializeField] private Rect spawnArea;
     [SerializeField] private Animator canvas;
+    [SerializeField] private OptionsLayout optionsLayout;
+    [SerializeField] private PowerUpsSet powerUps;
+    [SerializeField] private int numberOfOptionsForPowerUp = 3;
 
     private PlayerInput _playerInput;
 
@@ -28,6 +34,7 @@ public class GameManager : MonoBehaviour
     private static readonly int OnGameStartedTrigger = Animator.StringToHash("onGameStarted");
     private static readonly int OnGameFinishedTrigger = Animator.StringToHash("onGameFinished");
     private static readonly int OnDeathTrigger = Animator.StringToHash("onDeath");
+    private static readonly int LevelUpScreenBool = Animator.StringToHash("levelUpScreen");
 
     private void Start()
     {
@@ -47,6 +54,7 @@ public class GameManager : MonoBehaviour
     {
         if (!_gameIsOn) return;
         _gameIsOn = false;
+        _uniquePowerUpsUsed.Clear();
         _playerInput.SwitchCurrentActionMap("menu");
         canvas.SetTrigger(death ? OnDeathTrigger : OnGameFinishedTrigger);
     }
@@ -112,11 +120,53 @@ public class GameManager : MonoBehaviour
         _currentWave = -1;
         while (_currentWave + 1 < wavesCount)
         {
+            if (_currentWave >= 0) yield return StartCoroutine(LevelUp());
             CallNextWave();
             yield return new WaitWhile(() => _enemiesAlive > 0 && _gameIsOn);
             if (!_gameIsOn) yield break;
         }
         StopGame(false);
+    }
+
+    private IEnumerator LevelUp()
+    {
+        canvas.SetBool(LevelUpScreenBool, true);
+        _playerInput.SwitchCurrentActionMap("menu");
+        optionsLayout.Show(CreateRandomPowerUpsSet());
+        yield return new WaitUntil(() => optionsLayout.OptionSelected);
+        canvas.SetBool(LevelUpScreenBool, false);
+        _playerInput.SwitchCurrentActionMap("gameplay");
+    }
+
+    private readonly HashSet<PowerUp> _uniquePowerUpsUsed = new();
+
+    private HashSet<PowerUp> CreateRandomPowerUpsSet()
+    {
+        HashSet<PowerUp> options = new();
+        for (var i = 0; i < numberOfOptionsForPowerUp; i++)
+        {
+            var forbidden = new HashSet<PowerUp>(options);
+            forbidden.UnionWith(_uniquePowerUpsUsed);
+            options.Add(SelectRandomPowerUp(forbidden));
+        }
+        return options;
+    }
+
+    private PowerUp SelectRandomPowerUp(ICollection<PowerUp> forbidden)
+    {
+        var availablePowerUps = powerUps.powerUps.Where(powerUp => !forbidden.Contains(powerUp.powerUp)).ToList();
+        var sum = availablePowerUps.Sum(powerUp => powerUp.chance);
+        var rand = Random.Range(0f, sum);
+        sum = 0;
+        foreach (var powerUp in availablePowerUps)
+        {
+            sum += powerUp.chance;
+            if (rand > sum) continue;
+            
+            if (powerUp.powerUp.isUnique) _uniquePowerUpsUsed.Add(powerUp.powerUp);
+            return powerUp.powerUp;
+        }
+        throw new ApplicationException();
     }
 
     private void CallNextWave()
