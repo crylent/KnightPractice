@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using PowerUps;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace UI
@@ -14,6 +13,7 @@ namespace UI
         
         public void Show(HashSet<PowerUp> options)
         {
+            OptionSelected = false;
             foreach (var powerUp in options)
             {
                 var option = Instantiate(optionUI, transform);
@@ -21,7 +21,16 @@ namespace UI
                 option.description.text = powerUp.powerUpDesc;
                 
                 option.onClick.AddListener(() => powerUp.ApplyEffect());
-                option.onClick.AddListener(() => OptionSelected = true);
+                option.onClick.AddListener(OnOptionSelected);
+            }
+        }
+
+        private void OnOptionSelected()
+        {
+            OptionSelected = true;
+            foreach (Transform option in transform)
+            {
+                Destroy(option.gameObject);
             }
         }
     }

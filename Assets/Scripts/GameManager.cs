@@ -36,9 +36,12 @@ public class GameManager : MonoBehaviour
     private static readonly int OnDeathTrigger = Animator.StringToHash("onDeath");
     private static readonly int LevelUpScreenBool = Animator.StringToHash("levelUpScreen");
 
+    private float _minEnemiesComplexity;
+
     private void Start()
     {
         _playerInput = PlayerComponents.Object.GetComponent<PlayerInput>();
+        _minEnemiesComplexity = enemies.Min(enemy => enemy.Complexity);
     }
 
     public void StartGame()
@@ -72,43 +75,33 @@ public class GameManager : MonoBehaviour
             if (entity is not PlayerController) Destroy(entity.gameObject);
         }
     }
-    
-    private struct Range
-    {
-        public float Min;
-        public float Max;
-    }
 
     private void SpawnEnemies(float targetComplexity)
     {
-        while (targetComplexity > 0)
+        var i = 0;
+        while (targetComplexity > 0 && i < 20)
         {
-            SpawnRandomEnemy(targetComplexity * 2, out var complexity);
+            SpawnRandomEnemy(targetComplexity, out var complexity);
             targetComplexity -= complexity;
         }
     }
 
-    private void SpawnRandomEnemy(float maxComplexity, out float complexity)
+    private void SpawnRandomEnemy(float targetComplexity, out float complexity)
     {
-        var probabilities = new Dictionary<Enemy, Range>();
-        var sum = 0f;
-        foreach (var candidate in enemies)
-        {
-            if (candidate.Complexity > maxComplexity) continue;
-            
-            var prob = GetEnemyProbability(candidate);
-            probabilities.Add(candidate, new Range { Min = sum, Max = sum + prob });
-            sum += prob;
-        }
-
-        complexity = 0;
+        if (targetComplexity < _minEnemiesComplexity) targetComplexity = _minEnemiesComplexity;
+        var possibleEnemies = enemies.Where(enemy => enemy.Complexity <= targetComplexity).ToList();
+        var sum = possibleEnemies.Sum(GetEnemyProbability);
         var rand = Random.Range(0f, sum);
-        // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-        foreach (var candidate in probabilities)
+        sum = 0;
+        complexity = 0;
+        foreach (var candidate in possibleEnemies)
         {
-            if (rand < candidate.Value.Min || rand > candidate.Value.Max) continue;
-            StartCoroutine(SpawnEnemy(candidate.Key));
-            complexity = candidate.Key.Complexity;
+            var prob = GetEnemyProbability(candidate);
+            sum += prob;
+            if (rand > sum) continue;
+            
+            StartCoroutine(SpawnEnemy(candidate));
+            complexity = candidate.Complexity;
             return;
         }
     }
