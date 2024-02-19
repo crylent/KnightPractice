@@ -1,11 +1,15 @@
+using System.Collections;
 using System.Collections.Generic;
 using PowerUps;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public class OptionsLayout : HorizontalLayoutGroup
+    [RequireComponent(typeof(HorizontalLayoutGroup))]
+    public class OptionsLayout : UIBehaviour
     {
         [SerializeField] private PowerUpOption optionUI;
         
@@ -19,10 +23,15 @@ namespace UI
                 var option = Instantiate(optionUI, transform);
                 option.title.text = powerUp.powerUpName;
                 option.description.text = powerUp.powerUpDesc;
-                
-                option.onClick.AddListener(() => powerUp.ApplyEffect());
-                option.onClick.AddListener(OnOptionSelected);
+                StartCoroutine(AddListeners(option, powerUp.ApplyEffect));
             }
+        }
+
+        private IEnumerator AddListeners(PowerUpOption button, UnityAction applyEffect)
+        {
+            yield return new WaitForEndOfFrame(); // button is null until next frame
+            button.AddListener(applyEffect);
+            button.AddListener(OnOptionSelected);
         }
 
         private void OnOptionSelected()

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6577162780737279081}
   - component: {fileID: 8111472502584881916}
   - component: {fileID: 1739027623550344384}
-  - component: {fileID: 2452044234293793041}
+  - component: {fileID: 5813781334185781612}
   m_Layer: 5
   m_Name: Ellipse Option
   m_TagString: Untagged
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2452044234293793041
+--- !u!114 &5813781334185781612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: {fileID: 1159368508870678450}
   description: {fileID: 7019385333769251101}
+  clickSound: {fileID: 8300000, guid: ba2c52003bf780c41802036d43eec290, type: 3}
 --- !u!1 &2913316876126750550
 GameObject:
   m_ObjectHideFlags: 0

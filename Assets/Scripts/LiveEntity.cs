@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Player;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,6 +13,7 @@ using Utility;
     typeof(Rigidbody), 
     typeof(Collider)
     )]
+[RequireComponent(typeof(AudioSource))]
 public abstract class LiveEntity : GameEntity
 {
     [SerializeField] private float speed = 50f;
@@ -88,7 +90,7 @@ public abstract class LiveEntity : GameEntity
     protected float Freeze;
     protected bool IsFrozen;
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Fire") && fireResistance < 1f)
         {

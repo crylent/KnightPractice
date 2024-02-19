@@ -9,6 +9,7 @@ using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Utility;
 using Random = UnityEngine.Random;
 
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int wavesCount = 5;
     [SerializeField] private float initialComplexity = 20;
     [SerializeField] private float complexityMultiplier = 1.5f;
+    [SerializeField] private int maxEnemies = 100;
     
     [SerializeField] private List<Enemy> enemies;
     [SerializeField] private Portal portalPrefab;
@@ -25,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private OptionsLayout optionsLayout;
     [SerializeField] private PowerUpsSet powerUps;
     [SerializeField] private int numberOfOptionsForPowerUp = 3;
+
+    [FormerlySerializedAs("soundtrackController")] [SerializeField] private MusicController musicController;
 
     private PlayerInput _playerInput;
 
@@ -46,11 +50,11 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        ResetScene();
         _gameIsOn = true;
         _playerInput.SwitchCurrentActionMap("gameplay");
         canvas.SetTrigger(OnGameStartedTrigger);
         StartCoroutine(LaunchChallenge());
+        musicController.PlayMainTheme();
     }
 
     public void StopGame(bool death)
@@ -60,11 +64,19 @@ public class GameManager : MonoBehaviour
         _uniquePowerUpsUsed.Clear();
         _playerInput.SwitchCurrentActionMap("menu");
         canvas.SetTrigger(death ? OnDeathTrigger : OnGameFinishedTrigger);
+        StartCoroutine(WaitForMainMenuAndResetScene());
     }
 
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    private IEnumerator WaitForMainMenuAndResetScene()
+    {
+        yield return new WaitUntil(() => canvas.GetCurrentAnimatorStateInfo(0).IsName("Screens_MainMenu"));
+        musicController.PlayMenuTheme();
+        ResetScene();
     }
 
     private static void ResetScene()
@@ -78,11 +90,12 @@ public class GameManager : MonoBehaviour
 
     private void SpawnEnemies(float targetComplexity)
     {
-        var i = 0;
-        while (targetComplexity > 0 && i < 20)
+        var enemiesCounter = 0;
+        while (targetComplexity > 0 && enemiesCounter < maxEnemies)
         {
             SpawnRandomEnemy(targetComplexity, out var complexity);
             targetComplexity -= complexity;
+            enemiesCounter++;
         }
     }
 
@@ -125,6 +138,7 @@ public class GameManager : MonoBehaviour
     {
         canvas.SetBool(LevelUpScreenBool, true);
         _playerInput.SwitchCurrentActionMap("menu");
+        yield return new WaitUntil(() => optionsLayout.isActiveAndEnabled);
         optionsLayout.Show(CreateRandomPowerUpsSet());
         yield return new WaitUntil(() => optionsLayout.OptionSelected);
         canvas.SetBool(LevelUpScreenBool, false);

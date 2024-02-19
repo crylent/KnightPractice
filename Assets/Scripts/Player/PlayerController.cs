@@ -20,6 +20,7 @@ namespace Player
         [SerializeField] private float dodgeTime = 0.15f;
         [SerializeField] private float dodgeManaConsumption = 5f;
         [SerializeField] private ParticleSystem dodgeEffect;
+        [SerializeField] private AudioClip dodgeSound;
         private bool _isDodging;
 
         [SerializeField] private int shieldDefaultStability = 3;
@@ -35,9 +36,13 @@ namespace Player
         private float _mana;
 
         [SerializeField] private int criticalDamageFactor = 2;
+        [SerializeField] private ParticleSystem criticalHitEffect;
+        [SerializeField] private AudioClip criticalHitSound;
 
         private AttackCollider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
+
+        private AudioSource _audio;
         
         [SerializeField] private UnityEvent<int> onHealthChanged;
         [SerializeField] private UnityEvent<float> onManaChanged;
@@ -51,6 +56,7 @@ namespace Player
         private static readonly int ShieldDamageInt = Animator.StringToHash("shieldDamage");
         private static readonly int GoToSecondAttackBool = Animator.StringToHash("goToSecondAttack");
         private static readonly int HasDarknessEffectBool = Animator.StringToHash("hasDarknessEffect");
+        private static readonly int OnEvasionTrigger = Animator.StringToHash("onEvasion");
 
         public class PlayerModifiers
         {
@@ -78,6 +84,7 @@ namespace Player
             base.Start();
             _mana = maxMana;
             _shieldStability = shieldDefaultStability;
+            _audio = GetComponent<AudioSource>();
             PlayerComponents.Init(gameObject);
         }
 
@@ -159,6 +166,7 @@ namespace Player
             
             yield return new WaitWhile(() => IsAttacking); // can't dodge while attacking, but will do it after finishing
             Effects.PlayEffectOnce(dodgeEffect, transform);
+            _audio.PlayOneShot(dodgeSound);
             Rigidbody.velocity = _deltaMove * dodgeSpeed;
             
             // consume mana
@@ -189,12 +197,13 @@ namespace Player
                 if (Modifiers.CriticalHitChance > 0 && Random.Range(0f, 1f) < Modifiers.CriticalHitChance)
                 {
                     damage *= criticalDamageFactor; // critical hit
-                    // TODO: critical hit sound, vfx?
+                    Effects.PlayEffectOnce(criticalHitEffect, other.transform);
+                    _audio.PlayOneShot(criticalHitSound);
                 }
                 other.TakeDamage(this, damage);
                 if (!other.IsAlive && Modifiers.VampirismChance > 0 && Random.Range(0f, 1f) < Modifiers.VampirismChance)
                 {
-                    RecoverHealth(1); // vampirism effect
+                    RecoverHealth(); // vampirism effect
                 }
             }
         }
@@ -214,8 +223,11 @@ namespace Player
             if (Modifiers.EvasionChance > 0)
             {
                 var rand = Random.Range(0f, 1f);
-                if (rand < Modifiers.EvasionChance) return;
-                // TODO: evasion sound, vfx?
+                if (rand < Modifiers.EvasionChance)
+                {
+                    Animator.SetTrigger(OnEvasionTrigger);
+                    return;
+                }
             }
             if (_isBlocking && !producer.IsUnityNull() && 
                 (IsWatchingRight && producer!.transform.position.x > transform.position.x ||
@@ -285,8 +297,9 @@ namespace Player
         }
 
         // consume mana particles
-        private void OnTriggerEnter(Collider col)
+        protected override void OnTriggerEnter(Collider col)
         {
+            base.OnTriggerEnter(col);
             if (!col.TryGetComponent<ManaParticle>(out var manaParticle)) return;
             _mana += manaParticle.manaValue * Modifiers.ManaRecovery;
             onManaChanged.Invoke(_mana);
