@@ -294,6 +294,7 @@ namespace Player
             onHealthChanged.Invoke(Health);
             onFreezeChanged.Invoke(Freeze);
             transform.position = Vector3.zero;
+            Collider.enabled = true;
         }
 
         // consume mana particles

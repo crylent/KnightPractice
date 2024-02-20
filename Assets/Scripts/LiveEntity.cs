@@ -82,6 +82,7 @@ public abstract class LiveEntity : GameEntity
     {
         Health = Math.Max(Health - damage, 0);
         Animator.SetTrigger(IsAlive ? HitTrigger : DeathTrigger);
+        if (!IsAlive) Collider.enabled = false;
     }
     
     // PERIODIC DAMAGE CONTROLLER
