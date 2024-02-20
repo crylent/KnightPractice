@@ -34641,10 +34641,10 @@ GameObject:
   - component: {fileID: 7104374986759596917}
   - component: {fileID: 7104374986759596918}
   - component: {fileID: 2013302394655094129}
-  - component: {fileID: 1937975827780908880}
-  - component: {fileID: 123153670228137916}
+  - component: {fileID: -3016224893703742090}
+  - component: {fileID: 3507704675597072465}
   m_Layer: 0
-  m_Name: VFX_LargeIceArea
+  m_Name: VFX_Ice
   m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34659,8 +34659,8 @@ Transform:
   m_GameObject: {fileID: 7104374986759596919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 10, z: 0}
-  m_LocalScale: {x: 50, y: 10, z: 50}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5819100664172286623}
   - {fileID: 419793593614199374}
@@ -34681,7 +34681,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 5
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -39536,8 +39536,8 @@ CapsuleCollider:
   m_Radius: 0.6
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: -1, z: 0}
---- !u!114 &1937975827780908880
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-3016224893703742090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39550,7 +39550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 1
---- !u!114 &123153670228137916
+--- !u!114 &3507704675597072465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

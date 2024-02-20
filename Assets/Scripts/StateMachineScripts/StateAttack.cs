@@ -14,7 +14,7 @@ namespace StateMachineScripts
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            GetScriptComponent(animator).StartAttack(attackName, attackCollider, attackEffect);
+            GetScriptComponent(animator).StartAttack(attackName, attackEffect);
             var audio = GetAudioSource(animator);
             if (!audio.IsUnityNull() && !attackSound.IsUnityNull()) audio!.PlayOneShot(attackSound);
         }

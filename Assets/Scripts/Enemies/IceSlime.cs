@@ -35,8 +35,7 @@ namespace Enemies
 
         private Vector3 _iceAreaCenter;
 
-        public override void StartAttack(string attackName, 
-            AttackCollider attackCollider, ParticleSystem attackEffect)
+        public override void StartAttack(string attackName, ParticleSystem attackEffect)
         {
             if (!IsAlive) return;
             if (attackName == "Blow")
@@ -50,7 +49,7 @@ namespace Enemies
                     GetRotationToPlayer());
                 _iceAreaCenter = position + GetDirectionToPlayer() * iceAreaDistanceToCenter;
             }
-            else base.StartAttack(attackName, attackCollider, attackEffect);
+            else base.StartAttack(attackName, attackEffect);
         }
 
         public override void MakeDamage(string attackName, AttackCollider attackCollider)

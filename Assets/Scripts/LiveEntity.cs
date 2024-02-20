@@ -42,6 +42,8 @@ public abstract class LiveEntity : GameEntity
     private ParticleSystem _frozenEffect;
     private AddressableSingleHandler<ParticleSystem> _frozenEffectHandler;
 
+    protected float AttackAnimationSpeed => IsFrozen ? 0.5f : 1f;
+
     protected virtual void Start()
     {
         Health = maxHealth;
@@ -52,13 +54,23 @@ public abstract class LiveEntity : GameEntity
         _frozenEffectHandler = new AddressableSingleHandler<ParticleSystem>(this, "Frozen");
     }
 
-    public virtual void StartAttack(string attackName, [CanBeNull] AttackCollider attackCollider, [CanBeNull] ParticleSystem attackEffect) {}
+    public virtual void StartAttack(string attackName, ParticleSystem attackEffect)
+    {
+        if (attackEffect.IsUnityNull()) return;
+        foreach (var system in attackEffect!.GetComponentsInChildren<ParticleSystem>())
+        {
+            var main = system.main;
+            main.simulationSpeed = AttackAnimationSpeed;
+        }
+        Effects.PlayEffectOnce(attackEffect, transform, true);
+    }
 
     public virtual void MakeDamage(string attackName, [CanBeNull] AttackCollider attackCollider)
     {
         if (attackCollider.IsUnityNull() || !IsAlive) return;
         StartCoroutine(MakeDamageCoroutine(attackCollider));
     }
+    
     public virtual void AfterAttack()
     {
         IsAttacking = false;
@@ -71,8 +83,8 @@ public abstract class LiveEntity : GameEntity
         yield return new WaitForFixedUpdate(); // wait for OnTriggerEnter execution
         MakeDamageOnTarget(hitbox);
         var childSystem = hitbox.GetComponentInChildren<ParticleSystem>();
-        if (!childSystem.IsUnityNull()) // if has child particle system, delay destroying
-            yield return new WaitWhile(() => childSystem.IsAlive());
+        //if (!childSystem.IsUnityNull()) 
+        yield return new WaitUntil(() => childSystem.IsUnityNull()); // if has child particle system, delay destroying
         Destroy(hitbox.gameObject);
     }
 
@@ -128,7 +140,7 @@ public abstract class LiveEntity : GameEntity
         }
         else if (_frozenEffectHandler.HasInstance && !IsFrozen) // remove frozen effect
         {
-            Effects.StopEffect(_frozenEffectHandler.PopInstance());
+            _frozenEffectHandler.PopInstance().Stop();
         }
     }
 

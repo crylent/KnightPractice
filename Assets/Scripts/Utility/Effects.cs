@@ -12,12 +12,6 @@ namespace Utility
         {
             _instance = this;
         }
-
-        public static void StopEffect(ParticleSystem system)
-        {
-            system.Stop();
-            _instance.StartCoroutine(DestroyEffect(system));
-        }
         
         public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, Vector3 position)
         {
@@ -42,24 +36,11 @@ namespace Utility
             var system = isAttached ?
                 Instantiate(effect, parent) : 
                 Instantiate(effect, parent.position + transform.position, transform.rotation);
-            if (seconds != null)
-            {
-                yield return new WaitForSeconds((float) seconds);
-                if (system.IsDestroyed()) yield break;
-                system.Stop();
-            }
-
-            _instance.StartCoroutine(DestroyEffect(system));
-        }
-
-        private static IEnumerator DestroyEffect(ParticleSystem system)
-        {
-            var collider = system.GetComponent<Collider>();
-            if (!collider.IsUnityNull()) collider.enabled = false; // effect can no more affect player or enemies
             
-            yield return new WaitWhile(() => !system.IsDestroyed() && system.IsAlive());
+            if (seconds == null) yield break;
+            yield return new WaitForSeconds((float) seconds);
             if (system.IsDestroyed()) yield break;
-            Destroy(system.gameObject);
+            system.Stop();
         }
     }
 }

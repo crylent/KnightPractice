@@ -140,8 +140,6 @@ namespace Player
             Animator.SetFloat(AttackAnimSpeed, AttackAnimationSpeed);
         }
 
-        private float AttackAnimationSpeed => IsFrozen ? 0.5f : 1f;
-
         public void OnBlock(InputAction.CallbackContext context)
         {
             if (context.started && _shieldStability > 0) SetBlock(true);
@@ -175,18 +173,6 @@ namespace Player
             
             yield return new WaitForSeconds(dodgeTime);
             _isDodging = false;
-        }
-
-        public override void StartAttack(string attackName,
-            AttackCollider attackCollider, ParticleSystem attackEffect)
-        {
-            if (attackEffect.IsUnityNull()) return;
-            foreach (var system in attackEffect!.GetComponentsInChildren<ParticleSystem>())
-            {
-                var main = system.main;
-                main.simulationSpeed = AttackAnimationSpeed;
-            }
-            Effects.PlayEffectOnce(attackEffect, transform, true);
         }
 
         protected override void MakeDamageOnTarget(AttackCollider hitbox)

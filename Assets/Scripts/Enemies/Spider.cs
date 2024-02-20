@@ -26,7 +26,7 @@ namespace Enemies
             Attack(JumpTrigger);
         }
 
-        public override void StartAttack(string attackName, AttackCollider attackCollider, ParticleSystem attackEffect)
+        public override void StartAttack(string attackName, ParticleSystem attackEffect)
         {
             if (!IsAlive) return;
             var direction = GetDirectionToPlayer();

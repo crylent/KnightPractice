@@ -4906,9 +4906,9 @@ GameObject:
   - component: {fileID: 2293325868043696665}
   - component: {fileID: 2767575657988147597}
   - component: {fileID: 9010262053652773777}
-  - component: {fileID: 7138759378089291259}
+  - component: {fileID: 5015542396885367988}
   m_Layer: 0
-  m_Name: VFX_CatSwordLeft
+  m_Name: VFX_CatSwordRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4921,7 +4921,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2202258303566670764}
-  m_LocalRotation: {x: 0, y: 0.70710677, z: 0.70710677, w: 0}
+  m_LocalRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
@@ -4929,7 +4929,7 @@ Transform:
   - {fileID: 1628035361927494592}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 90, z: 90}
+  m_LocalEulerAnglesHint: {x: -90, y: 90, z: -90}
 --- !u!198 &2767575657988147597
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4940,7 +4940,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -9783,7 +9783,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &7138759378089291259
+--- !u!114 &5015542396885367988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

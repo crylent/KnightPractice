@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.6153696, b: 0.2235294, a: 0.34901962}
+      maxColor: {r: 0.39215687, g: 0.19607843, b: 0.47058824, a: 0.34901962}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4908,7 +4908,7 @@ GameObject:
   - component: {fileID: 8192249481888390621}
   - component: {fileID: 8964364059518398595}
   m_Layer: 0
-  m_Name: VFX_CatSwordRight2
+  m_Name: VFX_CatSwordRight2_Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4940,7 +4940,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -5120,7 +5120,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.1509434, g: 0.11280883, b: 0.07760769, a: 1}
+      maxColor: {r: 0.05490196, g: 0.007843138, b: 0.06666667, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

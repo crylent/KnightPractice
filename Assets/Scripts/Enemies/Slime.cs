@@ -65,8 +65,7 @@ namespace Enemies
             }
         }
 
-        public override void StartAttack(string attackName, 
-            AttackCollider attackCollider, ParticleSystem attackEffect)
+        public override void StartAttack(string attackName, ParticleSystem attackEffect)
         {
             if (!IsAlive) return;
             if (attackName != "Spurt") return;
