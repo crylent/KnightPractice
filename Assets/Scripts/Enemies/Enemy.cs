@@ -52,10 +52,10 @@ namespace Enemies
 
         protected override void MakeDamageOnTarget(AttackCollider hitbox)
         {
-            if (hitbox.PlayerIsInside)
-            {
-                PlayerComponents.Controller.TakeDamage(this, hitbox.Damage);
-            }
+            if (!hitbox.PlayerIsInside) return;
+            if (hitbox.Damage > 0) PlayerComponents.Controller.TakeDamage(this, hitbox.Damage);
+            if (hitbox.ShockForce > 0)
+                PlayerComponents.Controller.GetPushed(GetDirectionToPlayer() * hitbox.ShockForce);
         }
 
         private Vector3 _posDiff; // relative player's position

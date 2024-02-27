@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int maxEnemies = 100;
     
     [SerializeField] private List<Enemy> enemies;
+    [SerializeField] private Enemy finalBoss;
     [SerializeField] private Portal portalPrefab;
     [SerializeField] private Rect spawnArea;
     [SerializeField] private Animator canvas;
@@ -131,6 +132,9 @@ public class GameManager : MonoBehaviour
             yield return new WaitWhile(() => _enemiesAlive > 0 && _gameIsOn);
             if (!_gameIsOn) yield break;
         }
+
+        StartCoroutine(SpawnEnemy(finalBoss));
+        yield return new WaitWhile(() => _enemiesAlive > 0 && _gameIsOn);
         StopGame(false);
     }
 

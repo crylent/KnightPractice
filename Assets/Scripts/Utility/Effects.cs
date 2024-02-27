@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+// ReSharper disable UnusedMethodReturnValue.Global
 
 namespace Utility
 {
@@ -13,29 +14,36 @@ namespace Utility
             _instance = this;
         }
         
-        public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, Vector3 position)
+        public static ParticleSystem PlayEffectForSeconds(ParticleSystem effect, float seconds, Vector3 position)
         {
             var transform = new GameObject().transform;
             transform.position = position;
-            _instance.StartCoroutine(PlayAndDestroy(effect, transform, false, seconds));
+            return PlayEffect(effect, transform, false, seconds);
         }
 
-        public static void PlayEffectForSeconds(ParticleSystem effect, float seconds, Transform parent, bool isAttached = false)
+        public static ParticleSystem PlayEffectForSeconds(ParticleSystem effect, float seconds, Transform parent, bool isAttached = false)
         {
-            _instance.StartCoroutine(PlayAndDestroy(effect, parent, isAttached, seconds));
+            return PlayEffect(effect, parent, isAttached, seconds);
         }
 
-        public static void PlayEffectOnce(ParticleSystem effect, Transform parent, bool isAttached = false)
+        public static ParticleSystem PlayEffectOnce(ParticleSystem effect, Transform parent, bool isAttached = false)
         {
-            _instance.StartCoroutine(PlayAndDestroy(effect, parent, isAttached));
+            return PlayEffect(effect, parent, isAttached);
         }
 
-        private static IEnumerator PlayAndDestroy(ParticleSystem effect, Transform parent, bool isAttached, float? seconds = null)
+        private static ParticleSystem PlayEffect(ParticleSystem effect, Transform parent, bool isAttached, float? seconds = null)
         {
             var transform = effect.transform;
             var system = isAttached ?
                 Instantiate(effect, parent) : 
                 Instantiate(effect, parent.position + transform.position, transform.rotation);
+            
+            _instance.StartCoroutine(PlayAndDestroy(system, seconds));
+            return system;
+        }
+
+        private static IEnumerator PlayAndDestroy(ParticleSystem system, float? seconds = null)
+        {
             
             if (seconds == null) yield break;
             yield return new WaitForSeconds((float) seconds);

@@ -105,41 +105,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -6454997283069108406, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -1681630124577932925, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -147.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 948512885842739401, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2805404538631728759, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7205647666589598453, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7221240929078747135, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_Name
-      value: Sprites
-      objectReference: {fileID: 0}
-    - target: {fileID: 7221240929078747135, guid: c4bef5f275768144f9f0797a2966cf26,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -8806717212759352161, guid: 6605590ee4d832e458c8eb3f15994f7b,
         type: 3}
       propertyPath: m_IsActive
@@ -480,6 +445,41 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6454997283069108406, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1681630124577932925, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -147.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 948512885842739401, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2805404538631728759, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205647666589598453, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221240929078747135, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_Name
+      value: Sprites
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221240929078747135, guid: c4bef5f275768144f9f0797a2966cf26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -567,11 +567,11 @@ MonoBehaviour:
   dodgeEffect: {fileID: 4033287822461114141, guid: a164e676dbbd6e54587237e619372c98,
     type: 3}
   dodgeSound: {fileID: 8300000, guid: fd4dff7e82bde5a4d8eba87359b70f67, type: 3}
-  shieldDefaultStability: 3
-  shieldStabilityRecoverTime: 15
+  shield:
+    defaultStability: 3
+    defaultRecoverTime: 15
+    blockEffect: {fileID: 0}
   speedFactorWhenBlocking: 0.25
-  blockEffect: {fileID: 1289151679004632776, guid: 244545ca7bc6b9740aa3bedf5890aa6b,
-    type: 3}
   maxMana: 100
   manaRecovery: 0.1
   criticalDamageFactor: 2

@@ -6,7 +6,10 @@ using UnityEngine;
 public class AttackCollider : MonoBehaviour
 {
     [SerializeField] private int damage = 1;
+    [SerializeField] private float shockForce;
+    
     public int Damage => damage;
+    public float ShockForce => shockForce;
     
     public bool PlayerIsInside { get; private set; }
     public HashSet<Enemy> Enemies { get; } = new();

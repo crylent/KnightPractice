@@ -26,7 +26,7 @@ namespace Enemies
             Attack(JumpTrigger);
         }
 
-        public override void StartAttack(string attackName, ParticleSystem attackEffect)
+        public override void StartAttack(string attackName, ParticleSystem attackEffect, bool effectIsAttached = true)
         {
             if (!IsAlive) return;
             var direction = GetDirectionToPlayer();
@@ -34,9 +34,9 @@ namespace Enemies
             Collider.enabled = false;
         }
 
-        public override void AfterAttack()
+        public override void AfterAttack(ParticleSystem afterAttackEffect, bool effectIsAttached = true)
         {
-            base.AfterAttack();
+            base.AfterAttack(afterAttackEffect, effectIsAttached);
             Movement = Vector3.zero;
             _jumpCooldown.Cooldown();
             Collider.enabled = true;

@@ -23,12 +23,8 @@ namespace Player
         [SerializeField] private AudioClip dodgeSound;
         private bool _isDodging;
 
-        [SerializeField] private int shieldDefaultStability = 3;
-        [SerializeField] private float shieldStabilityRecoverTime = 15f;
-        [SerializeField] private float speedFactorWhenBlocking = 0.25f;
-        [SerializeField] private ParticleSystem blockEffect;
-        private int _shieldStability;
-        private bool _isBlocking;
+        [SerializeField] private Shield shield;
+        [SerializeField] public float speedFactorWhenBlocking = 0.25f;
 
         [SerializeField] private float maxMana = 100f;
         [SerializeField] private float manaRecovery = 1f;
@@ -41,6 +37,8 @@ namespace Player
 
         private AttackCollider _attackHitbox;
         private HashSet<Enemy> _enemiesBeingAttacked; // enemies inside the attack hitbox
+        
+        private bool _isBeingPushed;
 
         private AudioSource _audio;
         
@@ -52,8 +50,6 @@ namespace Player
         private static readonly int AttackAnimSpeed = Animator.StringToHash("attackAnimSpeed");
         private static readonly int IsRunningBool = Animator.StringToHash("isRunning");
         private static readonly int IsWatchingRightBool = Animator.StringToHash("isWatchingRight");
-        private static readonly int IsBlockingBool = Animator.StringToHash("isBlocking");
-        private static readonly int ShieldDamageInt = Animator.StringToHash("shieldDamage");
         private static readonly int GoToSecondAttackBool = Animator.StringToHash("goToSecondAttack");
         private static readonly int HasDarknessEffectBool = Animator.StringToHash("hasDarknessEffect");
         private static readonly int OnEvasionTrigger = Animator.StringToHash("onEvasion");
@@ -72,8 +68,7 @@ namespace Player
         }
 
         public PlayerModifiers Modifiers { get; private set; } = new();
-
-        private float FinalShieldStabilityRecoverTime => shieldStabilityRecoverTime * Modifiers.ShieldStabilityRecoverTime;
+        
         private float FinalSpeed => Speed * Modifiers.Speed;
         private float FinalManaRecovery => manaRecovery * Modifiers.ManaRecovery;
         private float FinalDodgeManaConsumption => dodgeManaConsumption * Modifiers.DodgeManaConsumption;
@@ -83,7 +78,9 @@ namespace Player
         {
             base.Start();
             _mana = maxMana;
-            _shieldStability = shieldDefaultStability;
+            shield.Init(this);
+            shield.AssignRecoverTimeModifier(() => Modifiers.ShieldStabilityRecoverTime);
+            shield.Reset();
             _audio = GetComponent<AudioSource>();
             PlayerComponents.Init(gameObject);
         }
@@ -100,12 +97,13 @@ namespace Player
         {
             if (_isDodging) return; // ignore default movement when dodging
             var movement = !IsAttacking ? _deltaMove : Vector3.zero; // stop movement when attacking
-            if (_isBlocking) movement *= speedFactorWhenBlocking; // slow down movement when blocking
+            if (shield.IsBlocking) movement *= speedFactorWhenBlocking; // slow down movement when blocking
             Rigidbody.velocity = FinalSpeed * movement;
         }
 
         public void OnMove(InputAction.CallbackContext context)
         {
+            if (_isBeingPushed) return;
             var v = context.ReadValue<Vector2>();
             _deltaMove = new Vector3(v[0], 0, v[1]);
             
@@ -115,7 +113,7 @@ namespace Player
             IsWatchingRight = deltaX > 0 || (deltaX == 0 && (deltaZ > 0 || (deltaZ == 0 && IsWatchingRight)));
             Animator.SetBool(IsWatchingRightBool, IsWatchingRight);
             Animator.SetBool(IsRunningBool, deltaX != 0 || deltaZ != 0);
-            Animator.SetFloat(RunAnimSpeed, (_isBlocking ? 0.5f : 1f) * (IsFrozen ? 0.75f : 1f));
+            Animator.SetFloat(RunAnimSpeed, (shield.IsBlocking ? 0.5f : 1f) * (IsFrozen ? 0.75f : 1f));
         }
 
         private bool _prepareOneMoreAttack;
@@ -135,21 +133,15 @@ namespace Player
         private void Attack()
         {
             IsAttacking = true;
-            if (_isBlocking) SetBlock(false); // stop blocking
+            if (shield.IsBlocking) shield.SetBlock(false); // stop blocking
             Animator.SetTrigger(AttackTrigger);
             Animator.SetFloat(AttackAnimSpeed, AttackAnimationSpeed);
         }
 
         public void OnBlock(InputAction.CallbackContext context)
         {
-            if (context.started && _shieldStability > 0) SetBlock(true);
-            else if (context.canceled) SetBlock(false);
-        }
-
-        private void SetBlock(bool blocking)
-        {
-            _isBlocking = blocking;
-            Animator.SetBool(IsBlockingBool, blocking);
+            if (context.started && shield.Stability > 0) shield.SetBlock(true);
+            else if (context.canceled) shield.SetBlock(false);
         }
 
         public void OnDodge(InputAction.CallbackContext context)
@@ -194,9 +186,9 @@ namespace Player
             }
         }
 
-        public override void AfterAttack()
+        public override void AfterAttack(ParticleSystem afterAttackEffect, bool effectIsAttached = true)
         {
-            base.AfterAttack();
+            base.AfterAttack(afterAttackEffect, effectIsAttached);
             
             if (!_prepareOneMoreAttack) return;
             _prepareOneMoreAttack = false;
@@ -215,13 +207,12 @@ namespace Player
                     return;
                 }
             }
-            if (_isBlocking && !producer.IsUnityNull() && 
+            if (shield.IsBlocking && !producer.IsUnityNull() && 
                 (IsWatchingRight && producer!.transform.position.x > transform.position.x ||
                  !IsWatchingRight && producer!.transform.position.x < transform.position.x)
                ) // can't block damage from environment or backstabs
             {
-                StartCoroutine(DamageShield(damage));
-                Effects.PlayEffectOnce(blockEffect, transform);
+                shield.Hit(damage);
             }
             else
             {
@@ -233,6 +224,20 @@ namespace Player
                 onHealthChanged.Invoke(Health);
                 if (!IsAlive) FindObjectOfType<GameManager>().StopGame(true);
             }
+        }
+
+        public void GetPushed(Vector3 force)
+        {
+            _isBeingPushed = true;
+            _deltaMove = force;
+            StartCoroutine(StopBeingPushed());
+        }
+
+        private IEnumerator StopBeingPushed()
+        {
+            yield return new WaitForSeconds(0.4f);
+            _isBeingPushed = false;
+            _deltaMove = Vector3.zero;
         }
 
         public void RecoverHealth(int hp = 1)
@@ -252,31 +257,13 @@ namespace Player
             if (_darknessEffectCounter == 0) Animator.SetBool(HasDarknessEffectBool, false);
         }
 
-        private IEnumerator DamageShield(int deltaStability)
-        {
-            _shieldStability -= deltaStability;
-            ReflectShieldDamage();
-            if (_shieldStability <= 0) SetBlock(false);
-            
-            yield return new WaitForSeconds(FinalShieldStabilityRecoverTime);
-            if (_shieldStability >= shieldDefaultStability) yield break;
-            _shieldStability += deltaStability; // recover stability later
-            ReflectShieldDamage();
-        }
-
-        private void ReflectShieldDamage()
-        {
-            Animator.SetInteger(ShieldDamageInt, shieldDefaultStability - _shieldStability);
-        }
-
         public void ResetPlayer()
         {
             Modifiers = new PlayerModifiers(); // reset effects
             Health = MaxHealth;
             _mana = MaxMana;
             Freeze = 0;
-            _shieldStability = shieldDefaultStability;
-            ReflectShieldDamage();
+            shield.Reset();
             onHealthChanged.Invoke(Health);
             onFreezeChanged.Invoke(Freeze);
             transform.position = Vector3.zero;

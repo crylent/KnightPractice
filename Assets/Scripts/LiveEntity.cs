@@ -54,7 +54,7 @@ public abstract class LiveEntity : GameEntity
         _frozenEffectHandler = new AddressableSingleHandler<ParticleSystem>(this, "Frozen");
     }
 
-    public virtual void StartAttack(string attackName, ParticleSystem attackEffect)
+    public virtual void StartAttack(string attackName, [CanBeNull] ParticleSystem attackEffect, bool effectIsAttached = true)
     {
         if (attackEffect.IsUnityNull()) return;
         foreach (var system in attackEffect!.GetComponentsInChildren<ParticleSystem>())
@@ -62,28 +62,30 @@ public abstract class LiveEntity : GameEntity
             var main = system.main;
             main.simulationSpeed = AttackAnimationSpeed;
         }
-        Effects.PlayEffectOnce(attackEffect, transform, true);
+        Effects.PlayEffectOnce(attackEffect, transform, effectIsAttached);
     }
 
-    public virtual void MakeDamage(string attackName, [CanBeNull] AttackCollider attackCollider)
+    public virtual void MakeDamage(string attackName, [CanBeNull] AttackCollider attackCollider, float damageDelay = 0)
     {
         if (attackCollider.IsUnityNull() || !IsAlive) return;
-        StartCoroutine(MakeDamageCoroutine(attackCollider));
+        StartCoroutine(MakeDamageCoroutine(attackCollider, damageDelay));
     }
     
-    public virtual void AfterAttack()
+    public virtual void AfterAttack([CanBeNull] ParticleSystem afterAttackEffect, bool effectIsAttached = true)
     {
         IsAttacking = false;
+        if (afterAttackEffect.IsUnityNull()) return;
+        Effects.PlayEffectOnce(afterAttackEffect, transform, effectIsAttached);
     }
 
-    private IEnumerator MakeDamageCoroutine(AttackCollider attackCollider)
+    private IEnumerator MakeDamageCoroutine(AttackCollider attackCollider, float damageDelay = 0)
     {
+        yield return new WaitForSeconds(damageDelay);
         var hitbox = Instantiate(attackCollider, gameObject.transform);
         hitbox.transform.parent = null; // detach from parent to ignore other attack colliders
         yield return new WaitForFixedUpdate(); // wait for OnTriggerEnter execution
         MakeDamageOnTarget(hitbox);
         var childSystem = hitbox.GetComponentInChildren<ParticleSystem>();
-        //if (!childSystem.IsUnityNull()) 
         yield return new WaitUntil(() => childSystem.IsUnityNull()); // if has child particle system, delay destroying
         Destroy(hitbox.gameObject);
     }

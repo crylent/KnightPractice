@@ -1,6 +1,5 @@
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utility;
 
 namespace Enemies
@@ -35,7 +34,7 @@ namespace Enemies
 
         private Vector3 _iceAreaCenter;
 
-        public override void StartAttack(string attackName, ParticleSystem attackEffect)
+        public override void StartAttack(string attackName, ParticleSystem attackEffect, bool effectIsAttached = true)
         {
             if (!IsAlive) return;
             if (attackName == "Blow")
@@ -52,13 +51,13 @@ namespace Enemies
             else base.StartAttack(attackName, attackEffect);
         }
 
-        public override void MakeDamage(string attackName, AttackCollider attackCollider)
+        public override void MakeDamage(string attackName, AttackCollider attackCollider, float damageDelay = 0)
         {
             if (attackName == "Blow")
             {
                 Effects.PlayEffectForSeconds(iceAreaEffect, iceAreaLifetime, _iceAreaCenter);
             }
-            else base.MakeDamage(attackName, attackCollider);
+            else base.MakeDamage(attackName, attackCollider, damageDelay);
         }
     }
 }

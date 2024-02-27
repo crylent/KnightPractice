@@ -30,9 +30,9 @@ namespace Enemies
             }
         }
 
-        public override void MakeDamage(string attackName, AttackCollider attackCollider)
+        public override void MakeDamage(string attackName, AttackCollider attackCollider, float damageDelay)
         {
-            base.MakeDamage(attackName, attackCollider);
+            base.MakeDamage(attackName, attackCollider, damageDelay);
             Collider.enabled = true;
         }
     }
