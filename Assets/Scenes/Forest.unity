@@ -809,9 +809,9 @@ MonoBehaviour:
   zoneBounds:
     serializedVersion: 2
     x: 760
-    y: -90
+    y: -70
     width: 180
-    height: 120
+    height: 100
   open: {fileID: 2100000, guid: 73ed23c714fcf94408dad22540217af4, type: 2}
   closed: {fileID: 2100000, guid: 33e09e6a10351134aba06e5383fd73c2, type: 2}
 --- !u!65 &51420948
@@ -3098,9 +3098,9 @@ MonoBehaviour:
   zoneBounds:
     serializedVersion: 2
     x: -40
-    y: -90
+    y: -70
     width: 180
-    height: 120
+    height: 100
   open: {fileID: 2100000, guid: 73ed23c714fcf94408dad22540217af4, type: 2}
   closed: {fileID: 2100000, guid: 33e09e6a10351134aba06e5383fd73c2, type: 2}
 --- !u!4 &176284756 stripped
@@ -6751,9 +6751,9 @@ MonoBehaviour:
   zoneBounds:
     serializedVersion: 2
     x: 160
-    y: -90
+    y: -70
     width: 180
-    height: 120
+    height: 100
   open: {fileID: 2100000, guid: 73ed23c714fcf94408dad22540217af4, type: 2}
   closed: {fileID: 2100000, guid: 33e09e6a10351134aba06e5383fd73c2, type: 2}
 --- !u!4 &409352430 stripped
@@ -23843,9 +23843,9 @@ MonoBehaviour:
   zoneBounds:
     serializedVersion: 2
     x: 960
-    y: -90
+    y: -70
     width: 180
-    height: 120
+    height: 100
   open: {fileID: 2100000, guid: 73ed23c714fcf94408dad22540217af4, type: 2}
   closed: {fileID: 2100000, guid: 33e09e6a10351134aba06e5383fd73c2, type: 2}
 --- !u!65 &1402047894
@@ -24855,9 +24855,9 @@ MonoBehaviour:
   zoneBounds:
     serializedVersion: 2
     x: 360
-    y: -90
+    y: -70
     width: 180
-    height: 120
+    height: 100
   open: {fileID: 2100000, guid: 73ed23c714fcf94408dad22540217af4, type: 2}
   closed: {fileID: 2100000, guid: 33e09e6a10351134aba06e5383fd73c2, type: 2}
 --- !u!65 &1462933809
@@ -32833,9 +32833,9 @@ MonoBehaviour:
   zoneBounds:
     serializedVersion: 2
     x: 560
-    y: -90
+    y: -70
     width: 180
-    height: 120
+    height: 100
   open: {fileID: 2100000, guid: 73ed23c714fcf94408dad22540217af4, type: 2}
   closed: {fileID: 2100000, guid: 33e09e6a10351134aba06e5383fd73c2, type: 2}
 --- !u!65 &1926752304
