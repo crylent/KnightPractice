@@ -10,9 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2055102311959635375}
   - component: {fileID: 2055102311959635368}
-  - component: {fileID: 286769860690764771}
   - component: {fileID: 4361423496260428652}
-  - component: {fileID: 6412662496810767038}
   - component: {fileID: 7906001886010149606}
   m_Layer: 0
   m_Name: PF Props Bush T3
@@ -89,27 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!95 &286769860690764771
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055102311959635369}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e5d05faf21ced64418f12affa3fdf927, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!65 &4361423496260428652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,25 +102,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.1875, y: 1.0000001, z: 0.20000003}
   m_Center: {x: 0, y: 0.50000006, z: 0}
---- !u!114 &6412662496810767038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055102311959635369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5161aefe5a8443c5825003565560e141, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opacity: 1
 --- !u!210 &7906001886010149606
 SortingGroup:
   m_ObjectHideFlags: 0

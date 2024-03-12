@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Enemy> enemies;
     [SerializeField] private Enemy finalBoss;
     [SerializeField] private Portal portalPrefab;
-    [SerializeField] private Rect spawnArea;
+    [SerializeField] private List<ZoneTrigger> zones;
     [SerializeField] private Animator canvas;
     [SerializeField] private OptionsLayout optionsLayout;
     [SerializeField] private PowerUpsSet powerUps;
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     private PlayerInput _playerInput;
 
     private int _currentWave = -1;
+    private Rect _spawnArea;
     private long _enemiesAlive;
     private bool _gameIsOn;
     private static readonly int OnGameStartedTrigger = Animator.StringToHash("onGameStarted");
@@ -104,13 +105,13 @@ public class GameManager : MonoBehaviour
     {
         if (targetComplexity < _minEnemiesComplexity) targetComplexity = _minEnemiesComplexity;
         var possibleEnemies = enemies.Where(enemy => enemy.Complexity <= targetComplexity).ToList();
-        var sum = possibleEnemies.Sum(GetEnemyProbability);
+        var sum = possibleEnemies.Sum(enemy => GetEnemyProbability(enemy, targetComplexity));
         var rand = Random.Range(0f, sum);
         sum = 0;
         complexity = 0;
         foreach (var candidate in possibleEnemies)
         {
-            var prob = GetEnemyProbability(candidate);
+            var prob = GetEnemyProbability(candidate, targetComplexity);
             sum += prob;
             if (rand > sum) continue;
             
@@ -120,12 +121,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static float GetEnemyProbability(Enemy enemy) => 1f / enemy.Complexity;
+    private static float GetEnemyProbability(Enemy enemy, float targetComplexity)
+    {
+        if (enemy.Complexity > targetComplexity) return 1f / Mathf.Pow(enemy.Complexity, 2); // low chance
+        if (enemy.Complexity >= targetComplexity / 2f) return 10f / enemy.Complexity; // high chance
+        return 1f / enemy.Complexity;
+    }
 
     private IEnumerator LaunchChallenge()
     {
         _currentWave = -1;
-        while (_currentWave + 1 < wavesCount)
+        while (_currentWave + 1 <= wavesCount)
         {
             if (_currentWave >= 0) yield return StartCoroutine(LevelUp());
             CallNextWave();
@@ -133,7 +139,6 @@ public class GameManager : MonoBehaviour
             if (!_gameIsOn) yield break;
         }
 
-        StartCoroutine(SpawnEnemy(finalBoss));
         yield return new WaitWhile(() => _enemiesAlive > 0 && _gameIsOn);
         StopGame(false);
     }
@@ -183,7 +188,10 @@ public class GameManager : MonoBehaviour
     private void CallNextWave()
     {
         _currentWave += 1;
-        SpawnEnemies(initialComplexity * MathF.Pow(complexityMultiplier, _currentWave));
+        if (_currentWave > 0) zones[_currentWave].Open();
+        _spawnArea = zones[_currentWave].ZoneBounds;
+        if (_currentWave == wavesCount) StartCoroutine(SpawnEnemy(finalBoss));
+        else SpawnEnemies(initialComplexity * MathF.Pow(complexityMultiplier, _currentWave));
     }
 
     private IEnumerator SpawnEnemy(Enemy enemy)
@@ -191,7 +199,7 @@ public class GameManager : MonoBehaviour
         _enemiesAlive += 1;
         var portal = Instantiate(
             portalPrefab, 
-            CustomRandom.GetPosition(spawnArea) + portalPrefab.transform.position,
+            CustomRandom.GetPosition(_spawnArea) + portalPrefab.transform.position,
             Quaternion.identity
             );
         portal.enemyToSpawn = enemy;

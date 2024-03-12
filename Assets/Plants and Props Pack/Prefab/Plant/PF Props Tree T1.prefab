@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 2055102311959635375}
   - component: {fileID: 8808230700408402376}
   - component: {fileID: 6925102851297486907}
-  - component: {fileID: -6499452737726902339}
-  - component: {fileID: -7587929090761271372}
   - component: {fileID: -6547249406614031809}
   m_Layer: 0
   m_Name: PF Props Tree T1
@@ -85,40 +83,6 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: -0.07709255, y: 2.32, z: 0}
---- !u!95 &-6499452737726902339
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055102311959635369}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e5d05faf21ced64418f12affa3fdf927, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-7587929090761271372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055102311959635369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5161aefe5a8443c5825003565560e141, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opacity: 1
 --- !u!210 &-6547249406614031809
 SortingGroup:
   m_ObjectHideFlags: 0

@@ -9,6 +9,8 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.Translate(followSpeed * Time.deltaTime * (PlayerPosition - transform.position));
+        var deltaPosition = PlayerPosition - transform.position;
+        deltaPosition.z = 0;
+        transform.Translate(followSpeed * Time.deltaTime * deltaPosition);
     }
 }
